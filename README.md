@@ -1,0 +1,10 @@
+[Wiki, ideas, howtos ~ notion](https://www.notion.so/thsm/HomeAssistant-eb200ec5dddb400d9ec3065c9e99774c)
+
+![IMG_0227](https://user-images.githubusercontent.com/6201068/82147895-9a82dc00-9859-11ea-9718-37797b16e6e7.jpeg)
+![IMG_0224](https://user-images.githubusercontent.com/6201068/82147899-a078bd00-9859-11ea-8c1a-df26f811880a.jpeg)
+![IMG_0732](https://user-images.githubusercontent.com/6201068/82147904-a9698e80-9859-11ea-8806-69a13dd51081.png)
+![IMG_0718](https://user-images.githubusercontent.com/6201068/82147909-ae2e4280-9859-11ea-8b17-2f45878d45a3.jpeg)
+![IMG_0697](https://user-images.githubusercontent.com/6201068/82147912-b4bcba00-9859-11ea-9cb9-85029832ee6d.jpeg)
+![IMG_0701](https://user-images.githubusercontent.com/6201068/82147914-b71f1400-9859-11ea-88b0-df739e788057.png)
+![IMG_0700](https://user-images.githubusercontent.com/6201068/82147916-b8504100-9859-11ea-937d-c078b36273c5.png)
+![IMG_0748](https://user-images.githubusercontent.com/6201068/82147925-c56d3000-9859-11ea-9306-261713eb0c1b.jpeg)
