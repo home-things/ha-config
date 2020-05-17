@@ -1,0 +1,15 @@
+
+####################################################
+#                   Выключатели                    #
+####################################################
+
+# # custom mqtt switch
+# - platform: mqtt
+#   name: living_mainlight_sw
+#   state_topic: "living_light_espeasy/light/state"
+#   command_topic: "living_light_espeasy/light/state"
+#   payload_on: "0"
+#   payload_off: "1"
+#   qos: 1
+#   retain: true
+

@@ -1,0 +1,8 @@
+.HA_VERSION
+.homekit.state
+.storage
+core
+custom_components
+*.log
+*.db
+tts

@@ -1,0 +1,19 @@
+exclude:
+  entities:
+    - binary_sensor.updater
+    #- persistent_notification.config_entry_discovery
+    - binary_sensor.0x00158d000431e5b2_contact
+    - binary_sensor.0x00158d0004082cc0_contact
+    - binary_sensor.0x00158d0004082cb0_contact
+    - switch.transmission_turtle_mode
+    - switch.transmission_switch
+    - switch.living_room_mainlight
+    - switch.living_room_mainlight_sw
+    - switch.main_light
+    - switch.kitchen_main_light
+
+  domains:
+    - notify
+    - persistent_notification
+    - device_tracker
+    - automation

@@ -1,0 +1,26 @@
+flower_1:
+  sensors:
+    moisture: sensor.flower_1_moisture
+    battery: sensor.flower_1_battery
+    temperature: sensor.flower_1_temperature
+    conductivity: sensor.flower_1_conductivity
+    brightness: sensor.flower_1_light
+  min_conductivity: 200
+flower_2:
+  sensors:
+    moisture: sensor.flower_2_moisture
+    battery: sensor.flower_2_battery
+    temperature: sensor.flower_2_temperature
+    conductivity: sensor.flower_2_conductivity
+    brightness: sensor.flower_2_light
+  min_conductivity: 200
+flower_3:
+  sensors:
+    moisture: sensor.flower_3_moisture
+    battery: sensor.flower_3_battery
+    temperature: sensor.flower_3_temperature
+    conductivity: sensor.flower_3_conductivity
+    brightness: sensor.flower_3_light
+  min_conductivity: 5
+  min_moisture: 6
+

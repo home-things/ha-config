@@ -1,0 +1,85 @@
+device_tracker.00_e0_4b_37_1d_60:
+  hidden: true
+device_tracker.00_e0_4e_36_d6_72:
+  hidden: true
+device_tracker.08_2c_b6_72_69_37:
+  hidden: true
+device_tracker.10_40_f3_87_2f_3e:
+  hidden: true
+device_tracker.60_01_94_c7_60_c3:
+  hidden: true
+device_tracker.f8_ff_c2_00_40_8f:
+  hidden: true
+device_tracker.fc_03_9f_2c_b1_ec:
+  hidden: true
+device_tracker.d4_61_da_8b_e7_15:
+  hidden: true
+device_tracker.b8_27_eb_ef_10_02:
+  hidden: true
+device_tracker.b8_27_eb_16_53_f0:
+  hidden: true
+binary_sensor.updater:
+  hidden: true
+sensor.hacs:
+  hidden: true
+binary_sensor.kinchen_balc_wnd:
+  device_class: window
+  friendly_name: Kitchen — Window
+binary_sensor.living_balc_wnd:
+  device_class: window
+  friendly_name: Living — Balcony window
+binary_sensor.living_room_movs:
+  device_class: motion
+  friendly_name: Living — Motion
+switch.living_room_edisson_light_switch:
+  hidden: true
+light.living_main_light:
+  friendly_name: Living — Main Light
+binary_sensor.bedroom_balc_door:
+  friendly_name: Bedroom — Balcony door
+binary_sensor.hall_main_door:
+  friendly_name: Hall — Main door
+light.living_room_edisson_light:
+  friendly_name: Living — Edisson light
+binary_sensor.kitchen_movs:
+  device_class: motion
+  friendly_name: Kitchen — motion
+binary_sensor.button:
+  hidden: true
+switch.kitchen_main_light:
+  friendly_name: kitchen_main_light_switch
+binary_sensor.living_movs:
+  friendly_name: Living — motion
+light.kitchen_main_light:
+  friendly_name: Kitchen — Main light
+switch.hall_wall_light:
+  device_class: switch
+  friendly_name: Hall — Wall light  (old)
+  hidden: true
+binary_sensor.hall_wall_switch:
+  friendly_name: Hall — Wall sw button
+  hidden: true
+binary_sensor.hall_movs:
+  friendly_name: Hall — Motion (old)
+  hidden: true
+switch.hall_led:
+  friendly_name: Hall — LED Stripe (old)
+  hidden: true
+binary_sensor.kitchen_movs_2:
+  device_class: motion
+  friendly_name: Kitchen — motion (new)
+binary_sensor.hall_movs_2:
+  device_class: motion
+  friendly_name: Hall — motion (new)
+switch.hall_led_2:
+  device_class: switch
+  friendly_name: Hall — Led stripe
+switch.hall_wall_light_2:
+  device_class: switch
+  friendly_name: Hall — Wall light
+sensor.0x00158d00039a2f89_click:
+  friendly_name: Living — edissons switch
+switch.living_edisson_light:
+  hidden: true
+light.living_edisson_light:
+  friendly_name: Living — Edisson light

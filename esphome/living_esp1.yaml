@@ -1,0 +1,62 @@
+esphome:
+  name: living_esp1
+  platform: ESP8266
+  board: esp12e
+
+wifi:
+  ssid: "grove"
+  password: "0My%Secur"
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Living Esp1 Fallback Hotspot"
+    password: "cHbIemtqBZev"
+  use_address: "192.168.88.187"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO14
+      mode: INPUT_PULLUP
+      inverted: False
+    id: button_1
+    on_state:
+      then:
+        - light.toggle: light_1
+
+  #- platform: status
+  #  name: "Living Light Status"
+
+output:
+  - platform: gpio
+    pin: GPIO12
+    id: relay_1
+
+light:
+  - platform: binary
+    name: "Living Main Light"
+    id: light_1
+    output: relay_1
+
+
+# output:
+#   - platform: esp8266_pwm
+#     pin: GPIO12
+#     frequency: 1000 Hz
+#     id: pwm_output
+
+# light:
+#   - platform: monochromatic
+#     output: pwm_output
+#     id: light_1
+#     name: "Living Main Light"

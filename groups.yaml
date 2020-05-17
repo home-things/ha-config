@@ -1,0 +1,11 @@
+home_persons:
+  name: Home persons
+  entities:
+    - person.mxtnr
+    - person.sveta
+    
+living_lights:
+  name: Living lights
+  entities:
+    - light.living_main_light
+    - light.living_room_edisson_light

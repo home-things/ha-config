@@ -1,0 +1,63 @@
+homeassistant:
+  customize: !include customize.yaml
+
+  packages:
+    air_purifier: !include xiaomi_purifier.yaml
+    zigbee_graph: !include zigbee_graph.yaml
+
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+  customize: !include customize.yaml
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+# http:
+#   base_url: example.duckdns.org:8123
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+frontend:
+  themes: !include_dir_merge_named themes
+
+# switch: !include switches.yaml
+group:          !include groups.yaml
+automation:     !include automations.yaml
+script:         !include scripts.yaml
+scene:          !include scenes.yaml
+plant:          !include plants.yaml
+device_tracker: !include device_trackers.yaml # Detect who is at home
+homekit: # Send HomeAssistant devices into Homekit
+history:        !include history_frontend.yaml
+light:          !include lights.yaml
+mqtt:           !include mqtt.yaml # Communicate through mosquitto with zigbee2mqtt, etc.
+
+media_player:
+  - platform: mpd
+    host: rpi4.local # localhost
+
+#   - platform: samsungtv_custom
+#     host: 192.168.88.242
+#     port: 8001
+#     mac: fc:03:9f:2c:b1:ec
+#     name: SamsungTV
+#     protocol: ctl_qled
+
+
+binary_sensor:
+  - platform: rpi_gpio
+    ports:
+      17: living_room_movs
+
+
+# # Выключать весь свет когда все ушли и на оборот
+# device_sun_light_trigger:
+#   device_group: group.home_persons
+
+
+
+shell_command:
+  #say_alex_hello: 'echo "Привет, Саша! С дал+го+ждан+ным ваз+ращением" | /usr/bin/festival --language russian --tts'
+  #say_sec: play --volume .5 /home/pi/one-sec.mp3  #'amixer cset numid=1 -- -500; mpg321 /home/pi/one-sec.mp3; amixer cset numid=1 -- 300'
+  

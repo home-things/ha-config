@@ -1,0 +1,2 @@
+var webhook_trigger_update_url = 'http://192.168.88.184:8123/api/webhook/1c17d3eb68b55366862d4fc10553387c246114552f4ef64b82752ea1437ada28';
+var webhook_check_update_url = 'http://192.168.88.184:8123/api/webhook/5f0106137806ef88de69656f5c6bcccd6c72cde44d428fdaade6622601967dc7';

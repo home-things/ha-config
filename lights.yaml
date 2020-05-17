@@ -1,0 +1,12 @@
+- platform: switch
+  name: kitchen_main_light
+  entity_id: switch.kitchen_main_light
+- platform: switch
+  name: living_edisson_light
+  entity_id: switch.living_edisson_light
+- platform: switch
+  name: hall_led_light
+  entity_id: switch.hall_led_2
+- platform: switch
+  name: hall_wall_light
+  entity_id: switch.hall_wall_light_2
