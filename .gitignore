@@ -6,3 +6,4 @@ custom_components
 *.log
 *.db
 tts
+/secrets.yaml
