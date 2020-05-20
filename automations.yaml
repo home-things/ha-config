@@ -1,8 +1,8 @@
 - id: '1588587120496'
-  alias: 'Living: turn on edisson on movement when sunset'
+  alias: 'Living: edissons: motion — turn on'
   description: ''
   trigger:
-  - entity_id: binary_sensor.living_room_movs
+  - entity_id: binary_sensor.living_motion
     platform: state
     to: 'on'
   condition:
@@ -11,18 +11,18 @@
     condition: sun
   action:
   - data: {}
-    entity_id: light.living_room_edisson_light
+    entity_id: light.living_edisson_light
     service: light.turn_on
 - id: '1588587120497'
   alias: 'Living: Turn off lights when no motion in a while'
   trigger:
-  - entity_id: binary_sensor.living_room_movs
+  - entity_id: binary_sensor.living_motion
     for: 0:20:00
     platform: state
     to: 'off'
   condition: []
   action:
-  - entity_id: light.living_room_edisson_light
+  - entity_id: light.living_edisson_light
     service: light.turn_off
   - data: {}
     entity_id: light.living_main_light
@@ -31,14 +31,14 @@
   alias: 'Living: Turn on main light when sunset and motion detected'
   description: ''
   trigger:
-  - entity_id: binary_sensor.living_room_movs
+  - entity_id: binary_sensor.living_motion
     platform: state
     to: 'on'
   condition:
-  - after: sunset
-    condition: sun
   - condition: and
     conditions:
+    - after: sunset
+      condition: sun
     - before: sunset
       before_offset: +04:00:00
       condition: sun
@@ -63,10 +63,7 @@
   trigger:
   - at: '8:40'
     platform: time
-  condition:
-  - condition: state
-    entity_id: group.home_persons
-    state: home
+  condition: []
   action:
   - data: {}
     entity_id: switch.hall_led_2
@@ -87,7 +84,7 @@
     entity_id: switch.hall_wall_light_2
     service: switch.turn_off
   - data: {}
-    entity_id: light.living_room_edisson_light
+    entity_id: light.living_edisson_light
     service: light.turn_off
 - id: '1589296416725'
   alias: 'Hall: wall switch — light'
@@ -144,4 +141,13 @@
   - data: {}
     entity_id: light.living_edisson_light
     service: light.toggle
-
+- id: '1589722525059'
+  alias: 'HA: Load plants on restart'
+  description: ''
+  trigger:
+  - event: start
+    platform: homeassistant
+  condition: []
+  action:
+  - data: {}
+    service: shell_command.update_plants

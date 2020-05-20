@@ -4,6 +4,7 @@ homeassistant:
   packages:
     air_purifier: !include xiaomi_purifier.yaml
     zigbee_graph: !include zigbee_graph.yaml
+    #living_light: !include living_light.yaml
 
 
 # Configure a default setup of Home Assistant (frontend, api, etc)
@@ -48,7 +49,7 @@ media_player:
 binary_sensor:
   - platform: rpi_gpio
     ports:
-      17: living_room_movs
+      17: living_motion
 
 
 # # Выключать весь свет когда все ушли и на оборот
@@ -60,4 +61,5 @@ binary_sensor:
 shell_command:
   #say_alex_hello: 'echo "Привет, Саша! С дал+го+ждан+ным ваз+ращением" | /usr/bin/festival --language russian --tts'
   #say_sec: play --volume .5 /home/pi/one-sec.mp3  #'amixer cset numid=1 -- -500; mpg321 /home/pi/one-sec.mp3; amixer cset numid=1 -- 300'
+  update_plants: "ssh orpik2.local 'sudo systemctl restart miflora.service'"
   

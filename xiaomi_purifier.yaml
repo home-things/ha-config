@@ -111,15 +111,6 @@ automation:
       data_template:
         entity_id: fan.xiaomi_air_purifier_2s
         speed: '{{ states.input_select.xiaomi_airpurifier_mode.state }}'
-  - alias: Air Purifier mode changed
-    trigger:
-      platform: state
-      entity_id: fan.xiaomi_air_purifier_2s
-    action:
-      service: input_select.select_option
-      entity_id: input_select.xiaomi_airpurifier_mode
-      data_template:
-        option: '{{ states.fan.xiaomi_air_purifier_2s.attributes.speed }}'
   - alias: Air Purifier favorite level change
     trigger:
       entity_id: input_number.xiaomi_airpurifier_favorite_level
@@ -129,12 +120,42 @@ automation:
       data_template:
         entity_id: fan.xiaomi_air_purifier_2s
         level: '{{ states.input_number.xiaomi_airpurifier_favorite_level.state | int }}'
+
+  # feedback
+  - alias: Air Purifier mode changed
+    trigger:
+      platform: template
+      # entity_id: fan.xiaomi_air_purifier_2s
+      value_template: "{{ states.fan.xiaomi_air_purifier_2s.attributes.speed }}"
+    action:
+      service: input_select.select_option
+      entity_id: input_select.xiaomi_airpurifier_mode
+      data_template:
+        option: '{{ states.fan.xiaomi_air_purifier_2s.attributes.speed }}'
   - alias: Air Purifier favorite level changed
     trigger:
-      platform: state
-      entity_id: fan.xiaomi_air_purifier_2s
+      platform: template
+      # entity_id: fan.xiaomi_air_purifier_2s
+      value_template: "{{ states.fan.xiaomi_air_purifier_2s.attributes.favorite_level }}"
     action:
       service: input_number.set_value
       entity_id: input_number.xiaomi_airpurifier_favorite_level
       data_template:
         value: '{{ states.fan.xiaomi_air_purifier_2s.attributes.favorite_level }}'
+
+group:
+  airpurifier:
+    name: Air Purifier group
+    entities:
+      - fan.xiaomi_miio_device
+      - input_select.xiaomi_airpurifier_mode
+      - input_number.xiaomi_airpurifier_favorite_level
+#      - input_number.xiaomi_airpurifier_volume # AirPurifier Pro
+      - switch.xiaomi_airpurifier_child_lock
+      - switch.xiaomi_airpurifier_led
+      - switch.xiaomi_airpurifier_buzzer
+      - sensor.xiaomi_airpurifier_speed
+      - sensor.xiaomi_airpurifier_filter_remaining
+      - sensor.xiaomi_airpurifier_air_quality_pm25
+      - sensor.xiaomi_airpurifier_temp
+      - sensor.xiaomi_airpurifier_humidity

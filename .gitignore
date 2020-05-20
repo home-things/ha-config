@@ -7,3 +7,5 @@ custom_components
 *.db
 tts
 /secrets.yaml
+*.db-shm
+*.db-wal

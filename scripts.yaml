@@ -4,7 +4,7 @@
 #     # Multiple entities for which you want to perform the same action.
 #     platform: state
 #     entity_id:
-#       - binary_sensor.living_room_movs
+#       - binary_sensor.living_motion
 #     to: "on"
 #     # Trigger when no motion for 30 minutes.
 #     for: "00:00:10"
@@ -12,16 +12,16 @@
 #     - service: light.turn_off
 #       data_template:
 #         # Turn off whichever entity triggered the automation.
-#         entity_id: "light.living_room_edisson_light"
+#         entity_id: "light.living_edisson_light"
 
 # turnoff_edissons_when_nomotion_while:
 #   # alias: Turnoff Edissons when no motion while
 #   trigger:
 #     platform: state
 #     entity_id: 
-#       - binary_sensor.living_room_movs
+#       - binary_sensor.living_movs
 #     to: "on"
 #     for: "00:00:05"
 #   action:
 #   - service: light.turn_off
-#     entity_id: light.living_room_edisson_light
+#     entity_id: light.living_edisson_light

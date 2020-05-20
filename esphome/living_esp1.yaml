@@ -23,6 +23,20 @@ api:
 
 ota:
 
+#
+# Declare pins
+
+# @internal light relay
+output:
+  - platform: gpio
+    pin: GPIO12
+    id: relay_1
+
+
+#
+# Export devices
+
+# @external switch button
 binary_sensor:
   - platform: gpio
     pin:
@@ -30,24 +44,19 @@ binary_sensor:
       mode: INPUT_PULLUP
       inverted: False
     id: button_1
+    name: living_main_light_switch
     on_state:
       then:
         - light.toggle: light_1
 
-  #- platform: status
-  #  name: "Living Light Status"
 
-output:
-  - platform: gpio
-    pin: GPIO12
-    id: relay_1
-
+#
+# @external light (based on light relay)
 light:
   - platform: binary
     name: "Living Main Light"
     id: light_1
     output: relay_1
-
 
 # output:
 #   - platform: esp8266_pwm
