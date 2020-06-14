@@ -1909,4 +1909,11 @@ honor_band_5_333:
   mac: 78:11:DC:B6:9D:05
   name: 78_11_dc_b6_9d_05
   picture:
-  track: true
+  track: false
+
+18_fe_34_d1_ad_1d:
+  icon:
+  mac: 18:FE:34:D1:AD:1D
+  name: 18_fe_34_d1_ad_1d
+  picture:
+  track: false

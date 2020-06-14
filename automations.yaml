@@ -69,11 +69,11 @@
     entity_id: switch.hall_led_2
     service: switch.turn_on
 - id: '1589220053566'
-  alias: '*: Turn off some lights when night came'
+  alias: '*: night came'
   description: ''
   trigger:
   - event: sunset
-    offset: +04:00:00
+    offset: +03:30:00
     platform: sun
   condition: []
   action:
@@ -86,6 +86,10 @@
   - data: {}
     entity_id: light.living_edisson_light
     service: light.turn_off
+  - data:
+      speed: Auto
+    entity_id: fan.xiaomi_air_purifier_2s
+    service: fan.set_speed
 - id: '1589296416725'
   alias: 'Hall: wall switch — light'
   description: ''
@@ -120,9 +124,6 @@
     platform: time
   condition: []
   action:
-  - data: {}
-    entity_id: automation.turnon_living_main_light_when_sunset_and_motion_detected
-    service: automation.turn_on
   - data: {}
     entity_id: automation.new_automation
     service: automation.turn_on

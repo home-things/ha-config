@@ -1,6 +1,6 @@
 - platform: switch
   name: kitchen_main_light
-  entity_id: switch.kitchen_main_light
+  entity_id: switch.kitchen_main_light_2
 - platform: switch
   name: living_edisson_light
   entity_id: switch.living_edisson_light
