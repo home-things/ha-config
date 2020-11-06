@@ -1,2 +1,2 @@
-var webhook_trigger_update_url = 'http://192.168.88.184:8123/api/webhook/7cc78544e7fee2fe536a9c8dbaaf0f186db595eb02bdb2f54f6196ec4f2940ed';
-var webhook_check_update_url = 'http://192.168.88.184:8123/api/webhook/fdcd8f49137f0a0e2b8236d8f0c8848c5d2bcbced1027398233f185d1dd4a636';
+var webhook_trigger_update_id = 'bc570ad655f65026eff9cd00a9d477a672c599b045f1b6f23047109834ebf437';
+var webhook_check_update_id = '1f75327682961340ae9a7a683c105ca5309858a76c608ff3a76b7319241ca442';

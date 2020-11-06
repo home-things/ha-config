@@ -151,7 +151,7 @@ tv_q9_tv:
   mac: BT_00:C3:F4:35:95:CF
   name: '[TV] Q9 TV'
   picture:
-  track: true
+  track: false
 
 lge_dtv_bcm20702a1:
   icon:
@@ -1917,3 +1917,66 @@ honor_band_5_333:
   name: 18_fe_34_d1_ad_1d
   picture:
   track: false
+
+f0_de_f1_ce_22_ef:
+  icon:
+  mac: F0:DE:F1:CE:22:EF
+  name: f0_de_f1_ce_22_ef
+  picture:
+  track: false
+
+58_ef_68_14_46_2b:
+  icon:
+  mac: 58:EF:68:14:46:2B
+  name: 58_ef_68_14_46_2b
+  picture:
+  track: false
+
+60_f6_77_73_fb_6d:
+  icon:
+  mac: 60:F6:77:73:FB:6D
+  name: 60_f6_77_73_fb_6d
+  picture:
+  track: false
+
+d6_85_59_1d_94_97:
+  name: d6_85_59_1d_94_97
+  mac: D6:85:59:1D:94:97
+  icon:
+  picture:
+  track: false
+
+mygpon:
+  name: mygpon
+  mac: E4:26:86:D7:DA:18
+  icon:
+  picture:
+  track: false
+
+08_f8_bc_72_69_5d:
+  name: 08_f8_bc_72_69_5d
+  mac: 08:F8:BC:72:69:5D
+  icon:
+  picture:
+  track: true
+
+c6_40_f7_06_1c_a2:
+  name: c6_40_f7_06_1c_a2
+  mac: C6:40:F7:06:1C:A2
+  icon:
+  picture:
+  track: true
+
+36_4f_32_f7_e3_96:
+  name: 36_4f_32_f7_e3_96
+  mac: 36:4F:32:F7:E3:96
+  icon:
+  picture:
+  track: true
+
+5c_cf_7f_39_14_20:
+  name: 5c_cf_7f_39_14_20
+  mac: 5C:CF:7F:39:14:20
+  icon:
+  picture:
+  track: true

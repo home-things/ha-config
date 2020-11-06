@@ -3,8 +3,8 @@
 fan:
   - platform: xiaomi_miio
     model: zhimi.airpurifier.ma2
-    host: '192.168.88.174'
-    token: '31baf3f78655c56ba958987826bd6785'
+    host: '192.168.1.71'
+    token: 'b2e3903e0ee64e12a45ce082d5053ac4'
     name: "Xiaomi Air Purifier 2S"
 
   
@@ -31,6 +31,10 @@ sensor:
         friendly_name: "Fan speed"
         value_template: "{{ state_attr('fan.xiaomi_air_purifier_2s', 'motor_speed') }}"
         unit_of_measurement: "rpm"
+        icon_template: "mdi:speedometer"
+      xiaomi_airpurifier_mode:
+        friendly_name: "Mode"
+        value_template: "{{ state_attr('fan.xiaomi_air_purifier_2s', 'speed') }}"
         icon_template: "mdi:speedometer"
       xiaomi_airpurifier_filter_remaining:
         friendly_name: "Filter remaining"
@@ -147,15 +151,21 @@ automation:
 
     # real automations
   - id: '1590777599769'
-    alias: 'Purify if dirty 3 '
+    alias: 'Purifier: dirty 3 '
     description: 'Minimal level '
     trigger:
     - above: '2'
       below: '8'
       entity_id: sensor.xiaomi_airpurifier_air_quality_pm25
-      for: 00:01:00
+      for: 00:00:12
       platform: numeric_state
-    condition: []
+    condition:
+    - condition: or
+      conditions:
+        - condition: sun
+          after: sunset
+        - condition: sun
+          before: sunrise
     action:
     - data:
         level: 4
@@ -175,7 +185,7 @@ automation:
       service: input_select.select_option
 
   - id: '1590778322846'
-    alias: Purify if dirty 8
+    alias: 'Purifier: dirty 8'
     description: 'middle level'
     trigger:
     - above: '7'
@@ -183,7 +193,13 @@ automation:
       entity_id: sensor.xiaomi_airpurifier_air_quality_pm25
       for: 00:00:10
       platform: numeric_state
-    condition: []
+    condition: 
+    - condition: or
+      conditions:
+        - condition: sun
+          after: sunset
+        - condition: sun
+          before: sunrise
     action:
     - data:
         level: 8
@@ -202,15 +218,21 @@ automation:
       entity_id: input_select.xiaomi_airpurifier_mode
       service: input_select.select_option
 
-  - id: '1590778322846'
-    alias: Purify if dirty 16
+  - id: '1590778322816'
+    alias: 'Purifier: dirty 16'
     description: 'max level'
     trigger:
     - above: '15'
       entity_id: sensor.xiaomi_airpurifier_air_quality_pm25
       for: 00:00:10
       platform: numeric_state
-    condition: []
+    condition: 
+    - condition: or
+      conditions:
+        - condition: sun
+          after: sunset
+        - condition: sun
+          before: sunrise
     action:
     - data:
         level: 16
@@ -230,7 +252,7 @@ automation:
       service: input_select.select_option
 
   - id: '1590779035335'
-    alias: No purify if clean
+    alias: 'Purifier: idle'
     description: 'silent'
     trigger:
     - below: '2'
@@ -239,18 +261,26 @@ automation:
       platform: numeric_state
     condition:
       - condition: state
-        entity_id: fan.xiaomi_air_purifier_2s
+        entity_id: sensor.xiaomi_airpurifier_mode
         state: Favorite
         
     action:
     - data:
-        speed: Auto
+        speed: Favorite
       entity_id: fan.xiaomi_air_purifier_2s
       service: fan.set_speed
     - data:
-        option: Auto
+        option: Favorite
       entity_id: input_select.xiaomi_airpurifier_mode
       service: input_select.select_option
+    - data:
+        level: 1
+      entity_id: fan.xiaomi_air_purifier_2s
+      service: xiaomi_miio.fan_set_favorite_level
+    - data:
+        value: 1
+      entity_id: input_number.xiaomi_airpurifier_favorite_level
+      service: input_number.set_value
 
 
 group:

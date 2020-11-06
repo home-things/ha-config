@@ -1,0 +1,151 @@
+timer:
+  five_sec_after_button_press:
+  one_min_after_button_press:
+
+automation:
+  ## Если свет не горит, то нажатие на кнопку всегда включет свет
+  # Cм esphome living_esp1
+  # Там, потому что суперлокальность. Простые функции должны работать без центрального сервера для скорости и отказоустойчивости.
+
+  ## Если свет горит, то нажатие на кнопку всегда выключит свет + вечером делаем проверку интента (через установку и последующую проверку таймеров)
+  - id: living_mainlight_button__off
+    alias: 'living: mainlight: button — off'
+    trigger:
+      platform: state
+      entity_id: binary_sensor.living_main_light_switch
+    condition:
+      - condition: state
+        entity_id: light.living_main_light
+        state: 'on'
+
+      # evening
+      - condition: sun
+        after: sunset
+        before: sunset
+        before_offset: '+04:00:00'
+    action:
+      # Непосредственно выключение см в esphome living_esp1
+
+      - service: timer.start
+        data:
+          entity_id: timer.five_sec_after_button_press
+          duration: '00:00:05'
+
+      - service: timer.start
+        data:
+          entity_id: timer.one_min_after_button_press
+          duration: '00:01:00'
+
+#      - service: input_boolean.turn_on
+#        entity_id: input_boolean.need_to_turn_off_living_light_automation
+
+
+
+  ## Включаем свет по движению если вечер + свет не был выключен в течении минуты
+  - id: living_mainlight_motion__on
+    alias: 'living: mainlight: motion — on'
+    trigger:
+      platform: state
+      entity_id: binary_sensor.living_motion
+      to: 'on'
+    condition:
+      # evening
+      - condition: sun
+        after: sunset
+        before: sunset
+        before_offset: '+04:00:00'
+
+      - condition: template
+        # (press) ------- | 5s ---- .. ---- | 1m ---- (*)
+        # OR
+        # (press) --(*)-- | 5s ---- .. ---- | 1m -------
+        value_template: "{{ not is_state('timer.one_min_after_button_press', 'active') and not is_state('timer.five_sec_after_button_press', 'active') or (is_state('timer.five_sec_after_button_press', 'active')) }}"
+    action:
+      - service: light.turn_on
+        entity_id: light.living_main_light
+
+
+
+#TODO: notification
+  ## Выключаем автоматику по движение если вечер + свет выключен и прошло больше 5 сек, но меньше 1 минуты с момента выключения
+  - id: living_mainlight_motion__automation_off
+    alias: 'living: mainlight: motion — automation off'
+    trigger:
+      platform: state
+      entity_id: binary_sensor.living_motion
+      to: 'on'
+    condition:
+      - condition: state
+        entity_id: automation.living_mainlight_motion__on
+        state: 'on'
+
+      # evening
+      - condition: sun
+        after: sunset
+        before: sunset
+        before_offset: '+04:00:00'
+
+      - condition: template
+        # (press) ------- | 5s ---- (*)  --- | 1m ------
+        value_template: "{{ is_state('timer.one_min_after_button_press', 'active') and not is_state('timer.five_sec_after_button_press', 'active') }}"
+    action:
+      - service: automation.turn_off
+        entity_id: automation.living_mainlight_motion__on
+
+
+
+  - id: living_mainlight_motion_off
+    alias: 'living: mainlight: motion timer — off'
+    trigger:
+      platform: state
+      entity_id: binary_sensor.living_motion
+      to: 'off'
+      for: '0:20:00'
+    action:
+      - entity_id: light.living_edisson_light
+        service: light.turn_off
+      - entity_id: light.living_main_light
+        service: light.turn_off
+
+
+
+
+#  ## Выключаем автоматику по следующей логике
+#  ## «если свет был выключен выключателем и в течении минуты движений не было
+#  ## (не считая первых 5 секунд после выключения),
+#  - id: living_mainlight_turn_automation_off
+#    alias: 'living: mainlight: turn automation off'
+#    trigger:
+#      - platform: event
+#        event_type: timer.finished
+#        event_data:
+#          entity_id: timer.one_min_after_button_press
+#    condition:
+#      - condition: state
+#        entity_id: input_boolean.need_to_turn_off_living_light_automation
+#        state: 'on'
+#    action:
+#      - service: automation.turn_off
+#        entity_id: automation.auto_light_on
+
+
+  ## Сбрасывается флаг input_boolean.need_to_turn_off_living_light_automation если
+  ## не выполняется условие:
+  ## "в течении минуты движений не было (не считая первых 5 секунд после выключения),"
+
+#  - alias: 'living: mainlight: remove flag need_to_turn_off_living_light_automation'
+#    trigger:
+#      platform: state
+#      entity_id: binary_sensor.living_motion
+#      to: 'on'
+#    condition:
+#      - condition: template
+#        value_template: "{{ not is_state('timer.five_sec_after_button_press', 'active') and is_state('timer.one_min_after_button_press', 'active') }}"
+#    action:
+#      - service: input_boolean.turn_off
+#        entity_id: input_boolean.need_to_turn_off_living_light_automation
+
+
+  ## Ночь закончилась — включаем автоматику в любом случае
+  # см ^: Enable automations
+

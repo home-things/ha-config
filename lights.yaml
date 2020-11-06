@@ -10,3 +10,16 @@
 - platform: switch
   name: hall_wall_light
   entity_id: switch.hall_wall_light_2
+
+- platform: mqtt
+  name: bedroom_light
+  state_topic: 'bedroom/light/switch_state'
+  payload_on: "ON"
+  payload_off: "OFF"
+  command_topic: 'bedroom/light/switch'
+  brightness_state_topic: "bedroom/light/state"
+  brightness_command_topic: 'bedroom/light/dimm'
+  brightness_scale: 2
+  qos: 1
+  retain: true
+  optimistic: false

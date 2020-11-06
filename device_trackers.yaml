@@ -3,10 +3,10 @@
 #     username: admin # !secret mikrotik_username
 #     password: !secret mikrotik_password
 - platform: nmap_tracker
-  hosts: 192.168.88.0/24
-  home_interval: 40 # minutes
-  interval_seconds: 120
-  scan_options: '-F –host-timeout 60s'
+  hosts: 192.168.1.0/24
+  home_interval: 60 # minutes
+  interval_seconds: 240
+  scan_options: '-F –host-timeout 120s'
 
 # - platform: bluetooth_tracker
 #   request_rssi: true

@@ -6,3 +6,17 @@ birth_message:
 will_message:
   topic: 'hass/status'
   payload: 'offline'
+
+#wtf
+# binary_sensor:
+#   - platform: mqtt
+#     name: Hall Motion New
+#     off_delay: 2
+#     state_topic: hall/input/hall_motion
+#     availability:
+#       topic: hall/status
+#       payload_available: running
+#       payload_not_available: dead
+#     payload_on: 'ON'
+#     payload_off: 'OFF'
+#     device_class: motion

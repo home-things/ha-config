@@ -1,0 +1,90 @@
+esphome:
+  name: esp_wc
+  platform: ESP8266
+  board: esp12e
+
+wifi:
+  ssid: "grove"
+  password: "0My%Secur"
+  reboot_timeout: 1h # Чтобы свет не моргал каждые 15 мин если wifi отвалился
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "EspWc Fallback EJ9N66PP7FMr"
+    password: "EJ9N66PP7FMr"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+#
+# Switch buttons input pins
+binary_sensor: 
+  - platform: gpio
+    name: "Kitchen Main Light Switch"
+    pin: 
+      number: 2
+      mode: INPUT_PULLUP
+      inverted: True
+    filters: # debounce
+      - delayed_on: 100ms
+      - delayed_off: 100ms
+
+  - platform: gpio
+    name: "WC Main Light Switch"
+    pin: 
+      number: 4
+      mode: INPUT_PULLUP
+      inverted: True
+    filters: # debounce
+      - delayed_on: 100ms
+      - delayed_off: 100ms
+
+  - platform: gpio
+    name: "Fan Switch"
+    pin: 
+      number: 5
+      mode: INPUT_PULLUP
+      inverted: True
+    filters: # debounce
+      - delayed_on: 100ms
+      - delayed_off: 100ms
+
+#
+# Relays
+output: 
+  - platform: gpio
+    id: "kitchen_relay_"
+    pin: 14
+    inverted: True # PULLUP
+
+  - platform: gpio
+    id: "wc_light_relay_"
+    pin: 12
+    inverted: True # PULLUP
+
+#
+# Frontend to relays
+light:
+  - platform: binary
+    name: "Kitchen Main Light (esp_wc)"
+    output: kitchen_relay_
+
+  - platform: binary
+    name: "WC Main Light (esp_wc)"
+    output: wc_light_relay_
+
+
+# Fallback на локальное управление WC Main Light при обрыве связи
+# on_...:
+#   if:
+#     condition:
+#       mqtt.connected:
+#     then:
+#       - logger.log: MQTT is connected!

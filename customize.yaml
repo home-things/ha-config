@@ -13,38 +13,37 @@ binary_sensor.living_motion:
   friendly_name: Living Motion
 switch.living_edisson_light_switch:
   hidden: true
+  friendly_name: _living_edisson_light_switch
 light.living_main_light:
   friendly_name: Living Main Light
 binary_sensor.bedroom_balc_door:
-  friendly_name: Bedroom — Balcony door
+  friendly_name: Bedroom Balcony door
 binary_sensor.hall_main_door:
   friendly_name: Hall Main door
 light.living_edisson_light:
   friendly_name: Living Edisson light
 binary_sensor.kitchen_movs:
   device_class: motion
-  friendly_name: Kitchen — motion
+  friendly_name: Kitchen Motion
 binary_sensor.button:
   hidden: true
 switch.kitchen_main_light:
-  friendly_name: kitchen_main_light_switch
+  friendly_name: _kitchen_main_light_switch
   hidden: true
-binary_sensor.living_movs:
-  friendly_name: Living — motion
 light.kitchen_main_light:
-  friendly_name: Kitchen Main light
+  friendly_name: obsolete kitchen_main_light
 switch.hall_wall_light:
   device_class: switch
-  friendly_name: Hall — Wall light  (old)
+  friendly_name: _hall_wall_light
   hidden: true
 binary_sensor.hall_wall_switch:
-  friendly_name: Hall — Wall sw button
+  friendly_name: _hall_wall_switch
   hidden: true
 binary_sensor.hall_movs:
-  friendly_name: Hall — Motion (old)
+  friendly_name: _old_hall_movs
   hidden: true
 switch.hall_led:
-  friendly_name: Hall — LED Stripe (old)
+  friendly_name: _old_hall_led
   hidden: true
 binary_sensor.kitchen_movs_2:
   device_class: motion
@@ -61,7 +60,7 @@ switch.hall_wall_light_2:
   friendly_name: _hall_wall_light
   hidden: true
 sensor.0x00158d00039a2f89_click:
-  friendly_name: living_edissons_button
+  friendly_name: Living Edissons button
 light.hall_led_light:
   friendly_name: Hall Led stripe
 light.hall_wall_light:
@@ -85,10 +84,25 @@ input_select.xiaomi_airpurifier_mode:
   - Favorite
 switch.living_edisson_light:
   friendly_name: _living_edisson_light
+  hidden: true
 switch.kitchen_main_light_2:
   friendly_name: _kitchen_main_light
   hidden: true
 binary_sensor.hall_wall_switch_2:
   friendly_name: Hall Wall switch
 binary_sensor.living_main_light_switch:
-  friendly_name: living_main_light_button
+  friendly_name: Living Main Light Button
+sensor.0x00158d00039b3168_action:
+  friendly_name: Hall Master Light Button action
+binary_sensor.entry_door_motion:
+  friendly_name: _EntryDoor Motion
+  device_class: motion
+  off_delay: '2'
+input_boolean.entry_door_motion:
+  icon: mdi:run
+light.bedroom_light:
+  friendly_name: Bedroom light
+light.wc_main_light_esp_wc:
+  friendly_name: WC Main Light
+light.kitchen_main_light_esp_wc:
+  friendly_name: Kitchen Main Light
