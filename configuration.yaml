@@ -56,11 +56,32 @@ history:        !include history_frontend.yaml
 light:          !include lights.yaml
 mqtt:           !include mqtt.yaml # Communicate through mosquitto with zigbee2mqtt, etc.
 
+# так нельзя похоже :()
+# fan:
+#     - platform: switch
+#       name: wc_fan
+#       entity_id: switch.wc_fan
+
 media_player:
+
+camera:
+#   platform: generic
+#   stream_source: rtsp://192.168.1.18:554/1/h264major
+#   username: admin
+#   password: groveAdmin
+#   verify_ssl: false
+    platform: ffmpeg
+    input: -rtsp_transport tcp -i rtsp://192.168.1.18:554/1/h264major
+
+
+# squeezebox aka LMS оказался глючным говном, хотя в первый день шикарно работал
+# на второй день половина колонок отваливалась с резкими неприятными звуками
+#  - platform: squeezebox
+#    host: rpi4.local
+
 #  - platform: mpd
 #    host: rpi4.local # localhost
-  - platform: squeezebox
-    host: rpi4.local
+
 #   - platform: samsungtv_custom
 #     host: 192.168.88.242
 #     port: 8001
@@ -68,15 +89,17 @@ media_player:
 #     name: SamsungTV
 #     protocol: ctl_qled
 
-  - platform: samsungtv_qled
-    host: 192.168.1.74
-    # port: 8002
-    mac: fc:03:9f:2c:b1:ec
-    name: Samsung TV
-    update_method: 'smartthings'
-    app_list: '{"Netflix": "11101200001", "Youtube": "111299001912", "Apple TV": "3201807016597", "Plex": "3201512006963", "Prime Video": "3201512006785"}'
-    api_key: 'f49d6a37-3f21-43fc-94b7-2f222f0834fe'
-    device_id: 'b5dbc981-9410-48b9-87fb-51770581a111'
+# Возникла какая-то ошибка, а сначала перестали раьботать каналы, и никогда не обновлялся статус
+# но это была первая хоть как-то заработавшая
+#   - platform: samsungtv_qled
+#     host: 192.168.1.74
+#     # port: 8002
+#     mac: fc:03:9f:2c:b1:ec
+#     name: Samsung TV
+#     update_method: 'smartthings'
+#     app_list: '{"Netflix": "11101200001", "Youtube": "111299001912", "Apple TV": "3201807016597", "Plex": "3201512006963", "Prime Video": "3201512006785"}'
+#     api_key: 'f49d6a37-3f21-43fc-94b7-2f222f0834fe'
+#     device_id: 'b5dbc981-9410-48b9-87fb-51770581a111'
 
 
 binary_sensor:
@@ -108,6 +131,56 @@ binary_sensor:
         #  {% else %}
         #    'rgb(54, 95, 140)'
         #  {% endif %}
+
+sensor:
+  # Note: Climate at WC is over MQTT discovery (from pi-mqtt-gpio)
+  
+  # Water at WC
+  - platform: template
+    sensors:
+      water_hot:
+        friendly_name: "Water Hot"
+        value_template: "{{ states('input_number.water_hot') }}"
+        unit_of_measurement: "m3"
+        device_class: "temperature" # HACK: HA has not more siutable
+        #icon: "hass:water"
+  - platform: template
+    sensors:
+      water_cold:
+        friendly_name: "Water Cold"
+        value_template: "{{ states('input_number.water_cold') }}"
+        unit_of_measurement: "m3"
+        device_class: "temperature"
+        #icon: "hass:water"
+
+  # Climate at bedroom
+  - platform: mqtt
+    name: "AirClimate Temperature Bedroom"
+    state_topic: "/bedroom/weather/climate"
+    unit_of_measurement: "°C"
+    value_template: "{{ value_json.temperature }}"
+  - platform: mqtt
+    name: "AirClimate Humidity Bedroom"
+    state_topic: "/bedroom/weather/climate"
+    unit_of_measurement: "%"
+    value_template: "{{ value_json.humidity }}"
+  - platform: mqtt
+    name: "AirClimate Pressure Bedroom"
+    state_topic: "/bedroom/weather/climate"
+    unit_of_measurement: "hPa"
+    value_template: "{{ value_json.pressure }}"
+
+  # SDS011 at bedroom
+  - platform: mqtt
+    name: "AirQuality PM2.5 Bedroom"
+    state_topic: "/bedroom/weather/pm"
+    unit_of_measurement: "µg/m³"
+    value_template: "{{ value_json.pm2_5 }}"
+  - platform: mqtt
+    name: "AirQuality PM10 Bedroom"
+    state_topic: "/bedroom/weather/pm"
+    unit_of_measurement: "µg/m³"
+    value_template: "{{ value_json.pm10 }}"
 
 # # Выключать весь свет когда все ушли и на оборот
 # device_sun_light_trigger:

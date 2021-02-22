@@ -1953,30 +1953,3 @@ mygpon:
   picture:
   track: false
 
-08_f8_bc_72_69_5d:
-  name: 08_f8_bc_72_69_5d
-  mac: 08:F8:BC:72:69:5D
-  icon:
-  picture:
-  track: true
-
-c6_40_f7_06_1c_a2:
-  name: c6_40_f7_06_1c_a2
-  mac: C6:40:F7:06:1C:A2
-  icon:
-  picture:
-  track: true
-
-36_4f_32_f7_e3_96:
-  name: 36_4f_32_f7_e3_96
-  mac: 36:4F:32:F7:E3:96
-  icon:
-  picture:
-  track: true
-
-5c_cf_7f_39_14_20:
-  name: 5c_cf_7f_39_14_20
-  mac: 5C:CF:7F:39:14:20
-  icon:
-  picture:
-  track: true

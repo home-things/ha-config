@@ -11,16 +11,13 @@ binary_sensor.living_balc_wnd:
 binary_sensor.living_motion:
   device_class: motion
   friendly_name: Living Motion
-switch.living_edisson_light_switch:
-  hidden: true
-  friendly_name: _living_edisson_light_switch
 light.living_main_light:
   friendly_name: Living Main Light
 binary_sensor.bedroom_balc_door:
   friendly_name: Bedroom Balcony door
 binary_sensor.hall_main_door:
   friendly_name: Hall Main door
-light.living_edisson_light:
+light.living_edisson:
   friendly_name: Living Edisson light
 binary_sensor.kitchen_movs:
   device_class: motion
@@ -70,7 +67,7 @@ switch.xiaomi_airpurifier_led:
 device_tracker.redmi:
   hidden: true
 sensor.xiaomi_airpurifier_temp:
-  friendly_name: Purifier Temperature
+  friendly_name: Kitchen Temperature
 device_tracker.w400:
   friendly_name: Boneco W400
   hidden: true
@@ -82,9 +79,6 @@ input_select.xiaomi_airpurifier_mode:
   - Auto
   - Silent
   - Favorite
-switch.living_edisson_light:
-  friendly_name: _living_edisson_light
-  hidden: true
 switch.kitchen_main_light_2:
   friendly_name: _kitchen_main_light
   hidden: true
@@ -106,3 +100,24 @@ light.wc_main_light_esp_wc:
   friendly_name: WC Main Light
 light.kitchen_main_light_esp_wc:
   friendly_name: Kitchen Main Light
+sensor.water_hot:
+  icon: hass:water
+sensor.xiaomi_airpurifier_air_quality_pm25:
+  friendly_name: Запылённость кухни
+  description: AirQuality PM2.5 Kitchen
+sensor.xiaomi_airpurifier_humidity:
+  friendly_name: Kitchen Humidity
+sensor.airquality_pm2_5_bedroom:
+  icon: mdi:weather-fog
+  friendly_name: Запылённость спальни
+  description: AirQuality PM2.5 Bedroom
+sensor.wc_humidity:
+  device_class: humidity
+sensor.airclimate_temperature_bedroom:
+  friendly_name: 'Bedroom Temperature '
+sensor.wc_temperature:
+  device_class: temperature
+  friendly_name: Bathroom Temperature
+  unit_of_measurement: °C
+sensor.airclimate_humidity_bedroom:
+  device_class: humidity

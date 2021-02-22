@@ -6,17 +6,15 @@
     platform: state
     to: 'on'
   condition:
-  - after: sunrise
-    after_offset: -04:00:00
-    condition: sun
-    before: sunset
-    before_offset: +04:00:00
   - condition: state
     entity_id: light.living_main_light
     state: 'off'
+  - condition: state
+    entity_id: light.living_edisson
+    state: 'off'
   action:
   - data: {}
-    entity_id: light.living_edisson_light
+    entity_id: light.living_edisson
     service: light.turn_on
   mode: single
 - id: '1588587120497'
@@ -28,7 +26,7 @@
     to: 'off'
   condition: []
   action:
-  - entity_id: light.living_edisson_light
+  - entity_id: light.living_edisson
     service: light.turn_off
   - data: {}
     entity_id: light.living_main_light
@@ -73,8 +71,8 @@
   condition: []
   action:
   - data: {}
-    entity_id: switch.hall_led_2
-    service: switch.turn_on
+    entity_id: light.hall_led
+    service: light.turn_on
 - id: '1589220053566'
   alias: '*: night came'
   description: ''
@@ -84,50 +82,55 @@
   condition: []
   action:
   - data: {}
-    entity_id: switch.hall_led_2
-    service: switch.turn_off
-  - data: {}
-    entity_id: switch.hall_wall_light_2
-    service: switch.turn_off
-  - data: {}
-    entity_id: light.living_edisson_light
+    entity_id: light.hall_led
     service: light.turn_off
-  - service: light.turn_off
-    data: {}
+  - data: {}
+    entity_id: light.hall_wall
+    service: light.turn_off
+  - data: {}
+    service: light.turn_off
     entity_id: light.kitchen_main_light_2
+  - data: {}
+    service: light.turn_off
+    entity_id: light.hallway_main_light
   mode: single
 - id: '1589296416725'
-  alias: 'Hall: wall switch — light'
+  alias: 'Hall: wall switch light'
   description: ''
   trigger:
   - entity_id: binary_sensor.hall_wall_switch_2
     from: 'on'
     platform: state
     to: 'off'
-  condition: []
-  action:
-  - data: {}
-    entity_id: switch.hall_wall_light_2
-    service: switch.toggle
-- id: '1589296617107'
-  alias: 'Hall: turn off wall light when no motion in a while'
-  description: ''
-  trigger:
-  - entity_id: switch.hall_wall_light_2
-    for: 00:20:00
-    platform: state
+  - platform: state
+    entity_id: binary_sensor.hall_wall_switch_2
+    from: 'off'
     to: 'on'
   condition: []
   action:
   - data: {}
-    entity_id: switch.hall_wall_light_2
-    service: switch.turn_off
+    entity_id: light.hall_wall
+    service: light.toggle
+  mode: single
+- id: '1589296617107'
+  alias: 'Hall: turn off wall light when no motion in a while'
+  description: ''
+  trigger:
+  - for: 00:20:00
+    platform: state
+    to: 'off'
+    entity_id: binary_sensor.entry_door_motion_final
+  condition: []
+  action:
+  - data: {}
+    entity_id: light.hall_wall
+    service: light.turn_off
   mode: single
 - id: '1589315913411'
   alias: '^: Enable automations'
   description: ''
   trigger:
-  - at: 04:00:00
+  - at: 08:00:00
     platform: time
   condition: []
   action:
@@ -143,8 +146,15 @@
   - data: {}
     entity_id: automation.no_purify_if_clean
     service: automation.turn_on
+  - service: automation.turn_on
+    data: {}
+    entity_id: automation.hall_main_door_wall_light
+  - service: automation.turn_on
+    data: {}
+    entity_id: automation.hall_motion_turn_wall_light_on
+  mode: single
 - id: '1589380016803'
-  alias: 'Living: switch—edissons on'
+  alias: 'Living: switch edissons on'
   description: ''
   trigger:
   - device_id: 09e58166923343f5bc376ebc11ce7393
@@ -155,14 +165,18 @@
     type: click
   condition:
   - condition: state
-    entity_id: light.living_edisson_light
+    entity_id: light.living_edisson
     state: 'off'
   action:
   - data: {}
-    entity_id: light.living_edisson_light
+    entity_id: light.living_edisson
     service: light.turn_on
+  - service: automation.turn_on
+    data: {}
+    entity_id: automation.living_edisson_motion
+  mode: single
 - id: '1589380016804'
-  alias: 'Living: switch—edissons off'
+  alias: 'Living: switch edissons off'
   description: ''
   trigger:
   - device_id: 09e58166923343f5bc376ebc11ce7393
@@ -173,27 +187,23 @@
     type: click
   condition:
   - condition: state
-    entity_id: light.living_edisson_light
+    entity_id: light.living_edisson
     state: 'on'
   action:
   - data: {}
-    entity_id: light.living_edisson_light
+    entity_id: light.living_edisson
     service: light.turn_off
-- id: '1589380016805'
-  alias: 'Living: edissons off—edissons automation off'
-  description: ''
-  trigger:
-  - entity_id: light.living_edisson_light
-    platform: state
-    to: 'off'
-  condition:
-  - after: sunset
-    after_offset: -02:00:00
-    condition: sun
-  action:
   - data: {}
+    entity_id: light.living_main_light
+    service: light.turn_off
+  - service: automation.turn_off
+    data: {}
     entity_id: automation.living_edisson_motion
-    service: automation.turn_off
+  - delay: 02:00:00
+  - service: automation.turn_on
+    data: {}
+    entity_id: automation.living_edisson_motion
+  mode: single
 - id: '1589722525059'
   alias: 'HA: Load plants on restart'
   description: ''
@@ -205,30 +215,29 @@
   - data: {}
     service: shell_command.update_plants
 - id: '1593593886358'
-  alias: 'Living: main switch off — edissons off'
+  alias: 'Living: main switch off edissons off'
   description: ''
   trigger:
-  - device_id: a01061773b2048899c251e063d1453b7
-    domain: binary_sensor
+  - platform: state
     entity_id: binary_sensor.living_main_light_switch
-    platform: device
-    type: turned_on
-  - device_id: a01061773b2048899c251e063d1453b7
-    domain: binary_sensor
+    from: 'on'
+    to: 'off'
+  - platform: state
     entity_id: binary_sensor.living_main_light_switch
-    platform: device
-    type: turned_off
+    from: 'off'
+    to: 'on'
   condition:
   - condition: state
-    entity_id: light.living_edisson_light
+    entity_id: light.living_edisson
     state: 'on'
   - condition: state
     entity_id: light.living_main_light
     state: 'off'
   action:
   - data: {}
-    entity_id: light.living_edisson_light
+    entity_id: light.living_edisson
     service: light.turn_off
+  mode: single
 - id: '1593597552955'
   alias: '*: Turn all light off'
   description: ''
@@ -242,29 +251,32 @@
     state: 'on'
   action:
   - data: {}
-    entity_id: light.hall_led_light
+    entity_id: light.hall_led
     service: light.turn_off
   - data: {}
-    entity_id: light.hall_wall_light
+    entity_id: light.hall_wall
     service: light.turn_off
   - data: {}
-    entity_id: light.kitchen_main_light
+    entity_id: light.hallway_main_light
     service: light.turn_off
   - data: {}
-    entity_id: light.living_edisson_light
+    entity_id: light.living_edisson
     service: light.turn_off
   - data: {}
     entity_id: light.living_main_light
     service: light.turn_off
-  - data: {}
-    entity_id: automation.turn_on_hall_led_stripe_at_8_40
-    service: automation.turn_off
-  - service: light.toggle
+  - service: light.turn_off
     data: {}
     entity_id: light.bedroom_light
   - service: light.turn_off
     data: {}
-    entity_id: light.wc_main_light_esp_wc
+    entity_id: light.kitchen_main_light_esp_wc
+  - service: light.turn_off
+    data: {}
+    entity_id: light.kitchen_led
+  - service: media_player.turn_off
+    data: {}
+    entity_id: media_player.q9
   mode: single
 - id: '1593597552958'
   alias: '*: Turn all light on'
@@ -279,13 +291,13 @@
     state: 'off'
   action:
   - data: {}
-    entity_id: light.hall_led_light
+    entity_id: light.hall_led
     service: light.turn_on
   - data: {}
-    entity_id: light.hall_wall_light
+    entity_id: light.hall_wall
     service: light.turn_on
   - data: {}
-    entity_id: light.living_edisson_light
+    entity_id: light.living_edisson
     service: light.turn_on
   - data: {}
     entity_id: automation.turn_on_hall_led_stripe_at_8_40
@@ -296,9 +308,12 @@
   - service: light.turn_on
     data: {}
     entity_id: light.bedroom_light
+  - service: light.turn_on
+    data: {}
+    entity_id: light.kitchen_led
   mode: single
 - id: '1599475769646'
-  alias: 'Hall: main door opened — light on'
+  alias: 'Hall: Main door opened — All Light on'
   description: 'Turn all light on when we came back '
   trigger:
   - entity_id: binary_sensor.hall_main_door
@@ -310,10 +325,10 @@
     state: 'off'
   action:
   - data: {}
-    entity_id: light.hall_wall_light
+    entity_id: light.hall_wall
     service: light.turn_on
   - data: {}
-    entity_id: light.hall_led_light
+    entity_id: light.hall_led
     service: light.turn_on
   - data: {}
     entity_id: light.living_main_light
@@ -321,6 +336,9 @@
   - data: {}
     entity_id: automation.turn_on_hall_led_stripe_at_8_40
     service: automation.turn_on
+  - service: light.turn_on
+    data: {}
+    entity_id: light.kitchen_led
   mode: single
 - id: '1601754197704'
   alias: 'Purifier: night idle'
@@ -377,9 +395,202 @@
   - platform: state
     to: 'on'
     entity_id: binary_sensor.entry_door_motion_final
+  condition:
+  - condition: time
+    before: '23:30:00'
+    after: '8:00:00'
+  action:
+  - service: light.turn_on
+    data: {}
+    entity_id: light.hall_wall_light
+  mode: single
+- id: '1606064025041'
+  alias: 'Hall: Main door — Wall Light'
+  description: even if some lights are on
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.hall_main_door
+    to: 'on'
   condition: []
   action:
   - service: light.turn_on
     data: {}
     entity_id: light.hall_wall_light
+  - service: light.turn_on
+    data: {}
+    entity_id: light.hall_led
+  mode: single
+- id: '1606078071869'
+  alias: 'Bedroom: light off — all light off'
+  description: at evening/night
+  trigger:
+  - platform: state
+    entity_id: light.bedroom_light
+    to: 'off'
+    for: 00:00:01
+  condition:
+  - condition: time
+    after: 00:30:00
+    before: 04:00:00
+  action:
+  - service: automation.trigger
+    data: {}
+    entity_id: automation.a_toggle_all_light
+  mode: single
+- id: '1612899740830'
+  alias: 'wc: water: update hot'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.wc_hot_imp
+    to: 'on'
+  condition: []
+  action:
+  - service: input_number.increment
+    data: {}
+    entity_id: input_number.water_hot
+  mode: single
+- id: '1612899740831'
+  alias: 'wc: water: update cold'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.wc_cld_imp
+    to: 'on'
+  condition: []
+  action:
+  - service: input_number.set_value
+    data_template:
+      entity_id: input_number.water_cold
+      value: '{{ float("{:.2f}".format(float(states("input_number.water_cold")) +
+        0.01)) }}'
+  mode: single
+- id: '1613142528014'
+  alias: Cleaner took off — All lights on
+  description: Режим уборки при снятии пылесоса
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.kitchen_vacuum_cleaner_contact
+    to: 'on'
+    for: 00:00:01
+    from: 'off'
+  condition:
+  - condition: time
+    after: 08:00:00
+    before: 02:00:00
+  action:
+  - service: automation.trigger
+    data: {}
+    entity_id: automation.turn_all_light_on
+  - service: light.turn_on
+    data:
+      brightness: 255
+    entity_id: light.bedroom_light
+  - service: light.turn_on
+    data: {}
+    entity_id: light.hallway_main_light
+  - service: light.turn_on
+    data: {}
+    entity_id: light.living_main_light
+  mode: single
+- id: '1613172422587'
+  alias: 'hall: turn off main light in 40 minutes'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: light.hallway_main_light
+    from: 'off'
+    to: 'on'
+    for: 00:40:00
+  condition: []
+  action:
+  - service: light.turn_off
+    data: {}
+    entity_id: light.hallway_main_light
+  mode: single
+- id: '1613332138211'
+  alias: Cleaner on baae — light down
+  description: ''
+  trigger:
+  - type: not_opened
+    platform: device
+    device_id: 5c51f6beeb683add8370b54fa3cac566
+    entity_id: binary_sensor.kitchen_vacuum_cleaner_contact
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: light.turn_off
+    data: {}
+    entity_id: light.hallway_main_light
+  - service: light.turn_off
+    data: {}
+    entity_id: light.living_main_light
+  - service: light.turn_off
+    data: {}
+    entity_id: light.hall_wall_light
+  mode: single
+- id: '1613345212576'
+  alias: tv on — main light off
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: media_player.q9
+    to: 'on'
+    from: 'off'
+  condition: []
+  action:
+  - service: light.turn_off
+    data: {}
+    entity_id: light.living_main_light
+  mode: single
+- id: '1613582192095'
+  alias: 'Bedroom: too cold'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.airclimate_temperature_bedroom
+    below: '16'
+    for: 00:01:00
+  condition:
+  - condition: state
+    entity_id: binary_sensor.bedroom_balc_door
+    state: 'on'
+  action:
+  - repeat:
+      while:
+      - condition: state
+        entity_id: binary_sensor.bedroom_balc_door
+        state: 'on'
+      - condition: numeric_state
+        entity_id: sensor.airclimate_temperature_bedroom
+        below: '16'
+      sequence:
+      - service: tts.google_translate_say
+        data:
+          message: Close bedroom window. Please, Close bedroom window. Temperature
+            is {{ states('sensor.airclimate_temperature_bedroom') }}
+          entity_id: media_player.living_rpi4_center
+      - wait_template: '{{ 1 }}'
+        timeout: 00:00:15
+        continue_on_timeout: true
+  mode: single
+- id: '1613808319719'
+  alias: 'Living: tv: Ambient'
+  description: ''
+  trigger:
+  - platform: time
+    at: '10:00:00'
+  condition:
+  - condition: state
+    entity_id: media_player.q9
+    state: 'off'
+  action:
+  - service: media_player.turn_on
+    data: {}
+    entity_id: media_player.q9
+  - service: media_player.play_media
+    data:
+      media_content_type: send_key
+      media_content_id: KEY_AMBIENT
+    entity_id: media_player.q9
   mode: single

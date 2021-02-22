@@ -8,13 +8,13 @@ living_lights:
   name: Living lights
   entities:
     - light.living_main_light
-    - light.living_edisson_light
+    - light.living_edisson
 
 all_lights:
   name: All Lights
   entities:
-    - light.hall_led_light
-    - light.hall_wall_light
+    - light.hall_led
+    - light.hall_wall
     - light.kitchen_main_light
-    - light.living_edisson_light
+    - light.living_edisson
     - light.living_main_light

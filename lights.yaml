@@ -2,14 +2,12 @@
   name: kitchen_main_light
   entity_id: switch.kitchen_main_light_2
 - platform: switch
-  name: living_edisson_light
-  entity_id: switch.living_edisson_light
+  name: wc_led
+  entity_id: switch.wc_led
 - platform: switch
-  name: hall_led_light
-  entity_id: switch.hall_led_2
-- platform: switch
-  name: hall_wall_light
-  entity_id: switch.hall_wall_light_2
+  name: kitchen_led
+  entity_id: switch.kitchen_led_light
+
 
 - platform: mqtt
   name: bedroom_light
@@ -23,3 +21,19 @@
   qos: 1
   retain: true
   optimistic: false
+
+## Виртуальные диммеры. Переключение уровней света
+#   - platform: template
+#     lights:
+#       hallway_lights:
+#         friendly_name: "Hallway Lights"
+#         level_template: "{{ state_attr('sensor.theater_brightness', 'lux')|int }}"
+#         value_template: "{{ state_attr('sensor.theater_brightness', 'lux')|int > 0 }}"
+#         turn_on:
+#           service: script.theater_lights_on
+#         turn_off:
+#           service: script.theater_lights_off
+#         set_level:
+#           service: script.theater_lights_level
+#           data:
+#             brightness: "{{ brightness }}"

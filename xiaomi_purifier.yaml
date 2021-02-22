@@ -4,7 +4,7 @@ fan:
   - platform: xiaomi_miio
     model: zhimi.airpurifier.ma2
     host: '192.168.1.71'
-    token: 'b2e3903e0ee64e12a45ce082d5053ac4'
+    token: '9b9cc02dcf7f559fc559071a18163970'
     name: "Xiaomi Air Purifier 2S"
 
   
@@ -160,12 +160,12 @@ automation:
       for: 00:00:12
       platform: numeric_state
     condition:
-    - condition: or
-      conditions:
-        - condition: sun
-          after: sunset
-        - condition: sun
-          before: sunrise
+    # - condition: or
+    #   conditions:
+    #     - condition: sun
+    #       after: sunset
+    #     - condition: sun
+    #       before: sunrise
     action:
     - data:
         level: 4
@@ -194,12 +194,12 @@ automation:
       for: 00:00:10
       platform: numeric_state
     condition: 
-    - condition: or
-      conditions:
-        - condition: sun
-          after: sunset
-        - condition: sun
-          before: sunrise
+    # - condition: or
+    #   conditions:
+    #     - condition: sun
+    #       after: sunset
+    #     - condition: sun
+    #       before: sunrise
     action:
     - data:
         level: 8
@@ -227,19 +227,19 @@ automation:
       for: 00:00:10
       platform: numeric_state
     condition: 
-    - condition: or
-      conditions:
-        - condition: sun
-          after: sunset
-        - condition: sun
-          before: sunrise
+    # - condition: or
+    #   conditions:
+    #     - condition: sun
+    #       after: sunset
+    #     - condition: sun
+    #       before: sunrise
     action:
     - data:
-        level: 16
+        level: 14
       entity_id: fan.xiaomi_air_purifier_2s
       service: xiaomi_miio.fan_set_favorite_level
     - data:
-        value: 16
+        value: 14
       entity_id: input_number.xiaomi_airpurifier_favorite_level
       service: input_number.set_value
     - data:

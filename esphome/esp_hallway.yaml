@@ -1,0 +1,49 @@
+esphome:
+  name: esp_hallway
+  platform: ESP8266
+  board: d1_mini
+
+wifi:
+  ssid: "grove"
+  password: "0My%Secur"
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Esp Hallway Fallback Hotspot"
+    password: "0peAeKTcX7rc"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+#
+# Switch buttons input pins
+binary_sensor: 
+  - platform: gpio
+    name: "Hallway Mainlight Switch"
+    pin: 
+      number: D2
+      mode: INPUT_PULLUP
+    filters: # debounce
+      - delayed_on: 100ms
+      - delayed_off: 100ms
+#
+# Relays
+output: 
+  - platform: gpio
+    id: "hallway_mainlight_relay"
+    pin: D1
+    inverted: False
+
+#
+# Frontend to relays
+light:
+  - platform: binary
+    name: "Hallway Main Light"
+    output: hallway_mainlight_relay

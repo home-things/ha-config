@@ -1,0 +1,15 @@
+- id: '1613344566955'
+  name: Уборка
+  entities:
+    light.living_main_light:
+      friendly_name: Living Main Light
+      supported_features: 8
+      state: 'off'
+    light.hallway_main_light:
+      friendly_name: Hallway Main Light
+      supported_features: 8
+      state: 'off'
+    light.hall_wall_light:
+      friendly_name: Hall Wall light
+      supported_features: 0
+      state: 'off'

@@ -64,7 +64,7 @@ output:
     pin: 14
     inverted: True # PULLUP
 
-  - platform: gpio
+  - platform: gpio # esp8266_pwm -- мигает
     id: "wc_light_relay_"
     pin: 12
     inverted: True # PULLUP
@@ -73,11 +73,11 @@ output:
 # Frontend to relays
 light:
   - platform: binary
-    name: "Kitchen Main Light (esp_wc)"
+    name: "Kitchen Main Light (esp wc)"
     output: kitchen_relay_
 
-  - platform: binary
-    name: "WC Main Light (esp_wc)"
+  - platform: binary # monochromatic -- мигает
+    name: "WC Main Light (esp wc)"
     output: wc_light_relay_
 
 
