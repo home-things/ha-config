@@ -1,5 +1,5 @@
 esphome:
-  name: esp_hallway
+  name: esp_kitchen_sink
   platform: ESP8266
   board: d1_mini
 
@@ -9,8 +9,8 @@ wifi:
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
-    ssid: "Esp Hall Fallback Hotspot"
-    password: "0peAeKTcX7rc"
+    ssid: "Esp Kitchen Sink"
+    password: "FE06Pm5wTTIL"
 
 captive_portal:
 
@@ -24,26 +24,26 @@ ota:
 
 #
 # Switch buttons input pins
-binary_sensor: 
+binary_sensor:
   - platform: gpio
-    name: hall_main_switch
-    pin: 
-      number: D2
+    name: kitchen_sink_motion
+    pin:
+      number: D4
       mode: INPUT_PULLUP
     filters: # debounce
-      - delayed_on: 100ms
-      - delayed_off: 100ms
+      - delayed_on: 50ms
+      - delayed_off: 50ms
 #
 # Relays
-output: 
-  - platform: gpio
-    id: hall_main_relay
-    pin: D1
+output:
+  - platform: gpio # esp8266_pwm
+    id: kitchen_sink_relay
+    pin: D3
     inverted: False
 
 #
 # Frontend to relays
 light:
-  - platform: binary
-    name: hall_main
-    output: hall_main_relay
+  - platform: binary # monochromatic
+    name: kitchen_sink
+    output: kitchen_sink_relay

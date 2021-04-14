@@ -2,7 +2,8 @@ homeassistant:
   customize: !include customize.yaml
 
   packages:
-    air_purifier: !include xiaomi_purifier.yaml
+    air_purifier:  !include xiaomi_purifier1.yaml
+    #air_purifier3: !include xiaomi_purifier3.yaml
     zigbee_graph: !include zigbee_graph.yaml
     #living_light: !include living_light.yaml
 
@@ -12,57 +13,59 @@ default_config:
   customize: !include customize.yaml
 
 # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
-# http:
+http:
 #   base_url: example.duckdns.org:8123
+  ssl_certificate: .ssl/fullchain.pem
+  ssl_key: .ssl/privkey.pem
 
 # Text to speech
 tts:
   - platform: google_translate
-
+    language: 'en'
+    time_memory: 300
+    service_name: google_say
+    base_url: https://invntrm.ru:8812
+    
 frontend:
-  themes: !include_dir_merge_named themes
+  themes:       !include_dir_merge_named themes
 
-# switch: !include switches.yaml
+api:
+
 group:          !include groups.yaml
 automation:     !include automations.yaml
 script:         !include scripts.yaml
 scene:          !include scenes.yaml
 plant:          !include plants.yaml
 device_tracker: !include device_trackers.yaml # Detect who is at home
-homekit: # Send HomeAssistant devices into Homekit
-    filter:
-        exclude_domains:
-            - device_tracker
-            - media_player
-            - person
-        exclude_entity_globs:
-            - '*._*'
-            - '*.transmission*'
-        exclude_entities:
-            - switch.kitchen_main_light_2
-            - binary_sensor.updater
-            - sensor.hacs
-            - switch.living_edisson_light_switch
-            - binary_sensor.button
-            - switch.kitchen_main_light
-            - switch.hall_wall_light
-            - binary_sensor.hall_wall_switch
-            - switch.hall_led_2
-            - switch.hall_wall_light_2
-            - switch.living_edisson_light
-            - switch.kitchen_main_light_2
-
+homekit:        !include homekit.yaml
 history:        !include history_frontend.yaml
 light:          !include lights.yaml
 mqtt:           !include mqtt.yaml # Communicate through mosquitto with zigbee2mqtt, etc.
+sensor:         !include sensors.yaml
 
-# так нельзя похоже :()
-# fan:
-#     - platform: switch
-#       name: wc_fan
-#       entity_id: switch.wc_fan
+binary_sensor:
+  - platform: rpi_gpio
+    ports:
+      17: living_motion
+  - platform: rpi_gpio
+    invert_logic: true
+    ports:
+      26: living_tv_near_desk
 
-media_player:
+switch:
+  - platform: rpi_gpio
+    ports:
+      21: living_speakers
+
+notify:
+  - name: all
+    platform: group
+    services:
+      - service: mobile_app_mxtnr # iphone
+      - service: mobile_app_sveta # xiaomi
+      - service: mobile_app_mextners_ipad_pro
+      - service: mobile_app_n_msk_macfjxn # mxtnr mbp
+
 
 camera:
 #   platform: generic
@@ -73,6 +76,12 @@ camera:
     platform: ffmpeg
     input: -rtsp_transport tcp -i rtsp://192.168.1.18:554/1/h264major
 
+
+
+media_player:
+  - platform: mpd
+    name: volumio_mpd
+    host: volumio.local
 
 # squeezebox aka LMS оказался глючным говном, хотя в первый день шикарно работал
 # на второй день половина колонок отваливалась с резкими неприятными звуками
@@ -102,94 +111,61 @@ camera:
 #     device_id: 'b5dbc981-9410-48b9-87fb-51770581a111'
 
 
-binary_sensor:
-  - platform: rpi_gpio
-    ports:
-      17: living_motion
-
-  - platform: template
-    sensors:
-      entry_door_motion_final:
-        friendly_name: EntryDoor Motion
-
-        value_template: >- 
-          {%- if is_state("input_boolean.entry_door_motion", "on") -%}
-            true
-          {%- else -%}
-            false
-          {%- endif -%} 
-
-        icon_template: >
-          {% if is_state("input_boolean.entry_door_motion", "on") %}
-            mdi:walk
-          {% else %}
-            mdi:run
-          {% endif %}
-        #
-        #  {% if is_state("input_boolean.entry_door_motion", "on") %} 
-        #    rgb(251, 210, 41)
-        #  {% else %}
-        #    'rgb(54, 95, 140)'
-        #  {% endif %}
-
-sensor:
-  # Note: Climate at WC is over MQTT discovery (from pi-mqtt-gpio)
-  
-  # Water at WC
-  - platform: template
-    sensors:
-      water_hot:
-        friendly_name: "Water Hot"
-        value_template: "{{ states('input_number.water_hot') }}"
-        unit_of_measurement: "m3"
-        device_class: "temperature" # HACK: HA has not more siutable
-        #icon: "hass:water"
-  - platform: template
-    sensors:
-      water_cold:
-        friendly_name: "Water Cold"
-        value_template: "{{ states('input_number.water_cold') }}"
-        unit_of_measurement: "m3"
-        device_class: "temperature"
-        #icon: "hass:water"
-
-  # Climate at bedroom
-  - platform: mqtt
-    name: "AirClimate Temperature Bedroom"
-    state_topic: "/bedroom/weather/climate"
-    unit_of_measurement: "°C"
-    value_template: "{{ value_json.temperature }}"
-  - platform: mqtt
-    name: "AirClimate Humidity Bedroom"
-    state_topic: "/bedroom/weather/climate"
-    unit_of_measurement: "%"
-    value_template: "{{ value_json.humidity }}"
-  - platform: mqtt
-    name: "AirClimate Pressure Bedroom"
-    state_topic: "/bedroom/weather/climate"
-    unit_of_measurement: "hPa"
-    value_template: "{{ value_json.pressure }}"
-
-  # SDS011 at bedroom
-  - platform: mqtt
-    name: "AirQuality PM2.5 Bedroom"
-    state_topic: "/bedroom/weather/pm"
-    unit_of_measurement: "µg/m³"
-    value_template: "{{ value_json.pm2_5 }}"
-  - platform: mqtt
-    name: "AirQuality PM10 Bedroom"
-    state_topic: "/bedroom/weather/pm"
-    unit_of_measurement: "µg/m³"
-    value_template: "{{ value_json.pm10 }}"
-
+      
 # # Выключать весь свет когда все ушли и на оборот
 # device_sun_light_trigger:
 #   device_group: group.home_persons
 
-
+# так нельзя похоже :()
+# fan:
+#     - platform: switch
+#       name: wc_fan
+#       entity_id: switch.wc_fan
 
 #shell_command:
   #say_alex_hello: 'echo "Привет, Саша! С дал+го+ждан+ным ваз+ращением" | /usr/bin/festival --language russian --tts'
   #say_sec: play --volume .5 /home/pi/one-sec.mp3  #'amixer cset numid=1 -- -500; mpg321 /home/pi/one-sec.mp3; amixer cset numid=1 -- 300'
   #update_plants: "ssh orpik2.local 'sudo systemctl restart miflora.service'"
   
+
+cover:
+  platform: mqtt
+  name: "Living Window Vent"
+  unique_id: "drivent-7c6"
+  device:
+    identifiers: "drivent-7c6"
+    manufacturer: "Drivent"
+    model: "v1"
+    name: "drivent-7c6"
+    sw_version: "1.5.3"
+  command_topic: "drivent-7c6/setTargetPosition"
+  position_topic: "drivent-7c6/CurrentPosition"
+  set_position_topic: "drivent-7c6/setTargetPosition"
+  payload_open: "100"
+  payload_close: "0"
+  payload_stop: "stop"
+  position_open: 100
+  position_closed: 0
+  availability:
+    - "topic": "drivent-7c6/LWT"
+      payload_available: "1"
+      payload_not_available: "0"
+
+
+rest_command:
+  upd_cld:
+    url: "http://localhost:8080/roscha/api/wc/water"
+    method: "put"
+    payload: '{"cld": {{states("input_number.water_cold")}}, "upd": "{{now().isoformat()}}" }'
+    content_type: "application/json;charset=utf-8"
+  upd_hot:
+    url: "http://localhost:8080/roscha/api/wc/water"
+    method: "put"
+    payload: '{"hot": {{states("input_number.water_hot")}}, "upd": "{{now().isoformat()}}"}'
+    content_type: "application/json;charset=utf-8"
+
+
+
+
+
+

@@ -1,0 +1,73 @@
+esphome:
+  name: esp_living_desk_btn
+  platform: ESP8266
+  board: d1_mini
+
+wifi:
+  ssid:     !secret wifi_ssid
+  password: !secret wifi_pswd
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Esp Living Desk Btn"
+    password: "OGaPl47PNsBI"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+
+#
+# Switch buttons input pins
+binary_sensor: 
+  - platform: gpio
+    name: living_btn_desk
+    pin: 
+      number: D4
+      mode: INPUT_PULLUP
+      inverted: yes
+    filters: # debounce
+      - delayed_on:  50ms
+      - delayed_off: 50ms
+    
+    on_click:
+      - max_length: 400ms
+        min_length: 50ms
+        then:
+          # - homeassistant.service:
+          #     service: media_player.media_play_pause
+          #     data:
+          #       entity_id: media_player.q9
+          - homeassistant.event:
+              event: esphome.living_desk_btn_click
+
+      - min_length:  500ms # on_hold
+        max_length: 5000ms
+        then:
+          - homeassistant.event:
+              event: esphome.living_desk_btn_hold
+    
+    on_double_click:
+      then:
+        - homeassistant.event:
+            event: esphome.living_desk_btn_dblclick
+
+      
+remote_transmitter:
+  pin: D2
+  # Infrared remotes use a 50% carrier signal
+  carrier_duty_percent: 50%
+
+switch:
+  - platform: template
+    name: "Living: Toggle TV"
+    turn_on_action:
+      remote_transmitter.transmit_samsung:
+          data: 0xE0E06798 # toggle power
+

@@ -1,0 +1,297 @@
+# Xiaomi purifier 3c (living)
+
+fan:
+  - platform: xiaomi_miio
+    model: zhimi.airpurifier.mb4
+    host: '192.168.1.96'
+    token: 'f03e031125132ffd51b74ab50ff1e962'
+    name: "Xiaomi Air Purifier 3C"
+
+
+# sensor:
+#   - platform: template
+#     sensors:
+#       xiaomi_airpurifier3_temp:
+#         friendly_name: "Temperature (3C)"
+#         value_template: "{{ state_attr('fan.xiaomi_air_purifier_3c', 'temperature') }}"
+#         unit_of_measurement: "°C"
+#         device_class: "temperature"
+#       xiaomi_airpurifier3_humidity:
+#         friendly_name: "Humidity (3C)"
+#         value_template: "{{ state_attr('fan.xiaomi_air_purifier_3c', 'humidity') }}"
+#         unit_of_measurement: "%"
+#         device_class: "humidity"
+#       xiaomi_airpurifier3_air_quality_pm25:
+#         friendly_name: "Air quality (3C)"
+#         value_template: "{{ state_attr('fan.xiaomi_air_purifier_3c', 'aqi') }}"
+#         unit_of_measurement: "μg/m³"
+#         icon_template: "mdi:weather-fog"
+#       xiaomi_airpurifier3_speed:
+#         friendly_name: "Fan speed (3C)"
+#         value_template: "{{ state_attr('fan.xiaomi_air_purifier_3c', 'motor_speed') }}"
+#         unit_of_measurement: "rpm"
+#         icon_template: "mdi:speedometer"
+#       xiaomi_airpurifier3_mode:
+#         friendly_name: "Mode (3C)"
+#         value_template: "{{ state_attr('fan.xiaomi_air_purifier_3c', 'speed') }}"
+#         icon_template: "mdi:speedometer"
+#       xiaomi_airpurifier3_filter_remaining:
+#         friendly_name: "Filter remaining (3C)"
+#         value_template: "{{ state_attr('fan.xiaomi_air_purifier_3c', 'filter_life_remaining') }}"
+#         unit_of_measurement: "%"
+#         icon_template: "mdi:heart-outline"
+
+# switch:
+#   - platform: template
+#     switches:
+#       xiaomi_airpurifier3_led:
+#         friendly_name: "LED (3C)"
+#         value_template: "{{ is_state_attr('fan.xiaomi_air_purifier_3c', 'led', true) }}"
+#         turn_on:
+#           service: xiaomi_miio.fan_set_led_on
+#           data:
+#             entity_id: fan.xiaomi_air_purifier_3c
+#         turn_off:
+#           service: xiaomi_miio.fan_set_led_off
+#           data:
+#             entity_id: fan.xiaomi_air_purifier_3c
+#         icon_template: "mdi:lightbulb-outline"
+#       xiaomi_airpurifier3_child_lock:
+#         friendly_name: "Child lock (3C)"
+#         value_template: "{{ is_state_attr('fan.xiaomi_air_purifier_3c', 'child_lock', true) }}"
+#         turn_on:
+#           service: xiaomi_miio.fan_set_child_lock_on
+#           data:
+#             entity_id: fan.xiaomi_air_purifier_3c
+#         turn_off:
+#           service: xiaomi_miio.fan_set_child_lock_off
+#           data:
+#             entity_id: fan.xiaomi_air_purifier_3c
+#         icon_template: "mdi:lock-outline"
+#       xiaomi_airpurifier3_buzzer:
+#         friendly_name: "Buzzer (3C)"
+#         value_template: "{{ is_state_attr('fan.xiaomi_air_purifier_3c', 'buzzer', true) }}"
+#         turn_on:
+#           service: xiaomi_miio.fan_set_buzzer_on
+#           data:
+#             entity_id: fan.xiaomi_air_purifier_3c
+#         turn_off:
+#           service: xiaomi_miio.fan_set_buzzer_off
+#           data:
+#             entity_id: fan.xiaomi_air_purifier_3c
+#         icon_template: "mdi:volume-high"
+  
+# input_select:
+#   xiaomi_airpurifier3_mode:
+#     name: "Mode (3C)"
+#     options:
+#       - Auto
+#       - Silent
+#       - Favorite
+#     icon: "mdi:animation-outline"
+
+# input_number:
+#   xiaomi_airpurifier3_favorite_level:
+#     name: "Favorite level (3C)"
+#     initial: 0
+#     min: 0
+#     max: 14
+#     step: 1
+#     icon: "mdi:weather-windy"
+    
+
+
+# automation:
+#   # manual control
+#   - alias: Air Purifier 3C mode change
+#     trigger:
+#       entity_id: input_select.xiaomi_airpurifier3_mode
+#       platform: state
+#     action:
+#       service: fan.set_speed
+#       data_template:
+#         entity_id: fan.xiaomi_air_purifier_3c
+#         speed: '{{ states.input_select.xiaomi_airpurifier3_mode.state }}'
+#   - alias: Air Purifier 3C favorite level change
+#     trigger:
+#       entity_id: input_number.xiaomi_airpurifier3_favorite_level
+#       platform: state
+#     action:
+#       service: xiaomi_miio.fan_set_favorite_level
+#       data_template:
+#         entity_id: fan.xiaomi_air_purifier_3c
+#         level: '{{ states.input_number.xiaomi_airpurifier3_favorite_level.state | int }}'
+
+
+#   # control feedback
+#   - alias: Air Purifier 3C mode changed
+#     trigger:
+#       platform: template
+#       # entity_id: fan.xiaomi_air_purifier_3c
+#       value_template: "{{ states.fan.xiaomi_air_purifier_3c.attributes.speed }}"
+#     action:
+#       service: input_select.select_option
+#       entity_id: input_select.xiaomi_airpurifier3_mode
+#       data_template:
+#         option: '{{ states.fan.xiaomi_air_purifier_3c.attributes.speed }}'
+  
+#   - alias: Air Purifier 3C favorite level changed
+#     trigger:
+#       platform: template
+#       # entity_id: fan.xiaomi_air_purifier_3c
+#       value_template: "{{ states.fan.xiaomi_air_purifier_3c.attributes.favorite_level }}"
+#     action:
+#       service: input_number.set_value
+#       entity_id: input_number.xiaomi_airpurifier3_favorite_level
+#       data_template:
+#         value: '{{ states.fan.xiaomi_air_purifier_3c.attributes.favorite_level }}'
+
+#     # real automations
+#   - id: '1590773599769'
+#     alias: 'Purifier 3C: dirty 3 '
+#     description: 'Minimal level '
+#     trigger:
+#     - above: '2'
+#       below: '8'
+#       entity_id: sensor.xiaomi_airpurifier3_air_quality_pm25
+#       for: 00:00:12
+#       platform: numeric_state
+#     condition:
+#     # - condition: or
+#     #   conditions:
+#     #     - condition: sun
+#     #       after: sunset
+#     #     - condition: sun
+#     #       before: sunrise
+#     action:
+#     - data:
+#         level: 5
+#       entity_id: fan.xiaomi_air_purifier_3c
+#       service: xiaomi_miio.fan_set_favorite_level
+#     - data:
+#         speed: Favorite
+#       entity_id: fan.xiaomi_air_purifier_3c
+#       service: fan.set_speed
+#     - data:
+#         value: 5
+#       entity_id: input_number.xiaomi_airpurifier3_favorite_level
+#       service: input_number.set_value
+#     - data:
+#         option: Favorite
+#       entity_id: input_select.xiaomi_airpurifier3_mode
+#       service: input_select.select_option
+
+#   - id: '1590773322846'
+#     alias: 'Purifier 3C: dirty 8'
+#     description: 'middle level'
+#     trigger:
+#     - above: '7'
+#       below: '16'
+#       entity_id: sensor.xiaomi_airpurifier3_air_quality_pm25
+#       for: 00:00:10
+#       platform: numeric_state
+#     condition: 
+#     # - condition: or
+#     #   conditions:
+#     #     - condition: sun
+#     #       after: sunset
+#     #     - condition: sun
+#     #       before: sunrise
+#     action:
+#     - data:
+#         level: 8
+#       entity_id: fan.xiaomi_air_purifier_3c
+#       service: xiaomi_miio.fan_set_favorite_level
+#     - data:
+#         speed: Favorite
+#       entity_id: fan.xiaomi_air_purifier_3c
+#       service: fan.set_speed
+#     - data:
+#         value: 8
+#       entity_id: input_number.xiaomi_airpurifier3_favorite_level
+#       service: input_number.set_value
+#     - data:
+#         option: Favorite
+#       entity_id: input_select.xiaomi_airpurifier3_mode
+#       service: input_select.select_option
+
+#   - id: '1590773322816'
+#     alias: 'Purifier 3C: dirty 16'
+#     description: 'max level'
+#     trigger:
+#     - above: '15'
+#       entity_id: sensor.xiaomi_airpurifier3_air_quality_pm25
+#       for: 00:00:10
+#       platform: numeric_state
+#     condition: 
+#     # - condition: or
+#     #   conditions:
+#     #     - condition: sun
+#     #       after: sunset
+#     #     - condition: sun
+#     #       before: sunrise
+#     action:
+#     - data:
+#         level: 14
+#       entity_id: fan.xiaomi_air_purifier_3c
+#       service: xiaomi_miio.fan_set_favorite_level
+#     - data:
+#         value: 14
+#       entity_id: input_number.xiaomi_airpurifier3_favorite_level
+#       service: input_number.set_value
+#     - data:
+#         speed: Favorite
+#       entity_id: fan.xiaomi_air_purifier_3c
+#       service: fan.set_speed
+#     - data:
+#         option: Favorite
+#       entity_id: input_select.xiaomi_airpurifier3_mode
+#       service: input_select.select_option
+
+#   - id: '1590773035335'
+#     alias: 'Purifier 3C: idle'
+#     description: 'silent'
+#     trigger:
+#     - below: '2'
+#       entity_id: sensor.xiaomi_airpurifier3_air_quality_pm25
+#       for: 00:01:00
+#       platform: numeric_state
+#     condition:
+#       - condition: state
+#         entity_id: sensor.xiaomi_airpurifier3_mode
+#         state: Favorite
+        
+#     action:
+#     - data:
+#         speed: Favorite
+#       entity_id: fan.xiaomi_air_purifier_3c
+#       service: fan.set_speed
+#     - data:
+#         option: Favorite
+#       entity_id: input_select.xiaomi_airpurifier3_mode
+#       service: input_select.select_option
+#     - data:
+#         level: 3
+#       entity_id: fan.xiaomi_air_purifier_3c
+#       service: xiaomi_miio.fan_set_favorite_level
+#     - data:
+#         value: 3
+#       entity_id: input_number.xiaomi_airpurifier3_favorite_level
+#       service: input_number.set_value
+
+
+# group:
+#   airpurifier:
+#     name: Air Purifier 3C group
+#     entities:
+#       - fan.xiaomi_miio_device
+#       - input_select.xiaomi_airpurifier3_mode
+#       - input_number.xiaomi_airpurifier3_favorite_level
+#       - switch.xiaomi_airpurifier3_child_lock
+#       - switch.xiaomi_airpurifier3_led
+#       - switch.xiaomi_airpurifier3_buzzer
+#       - sensor.xiaomi_airpurifier3_speed
+#       - sensor.xiaomi_airpurifier3_filter_remaining
+#       - sensor.xiaomi_airpurifier3_air_quality_pm25
+#       - sensor.xiaomi_airpurifier3_temp
+#       - sensor.xiaomi_airpurifier3_humidity

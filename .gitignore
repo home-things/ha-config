@@ -9,3 +9,5 @@ tts
 /secrets.yaml
 *.db-shm
 *.db-wal
+.ssl
+rtsp2webrtc_v1_armv7

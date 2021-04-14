@@ -5,17 +5,23 @@
   - entity_id: binary_sensor.living_motion
     platform: state
     to: 'on'
+    from: 'off'
   condition:
   - condition: state
-    entity_id: light.living_main_light
+    entity_id: light.living_main
     state: 'off'
   - condition: state
     entity_id: light.living_edisson
     state: 'off'
   action:
   - data: {}
-    entity_id: light.living_edisson
     service: light.turn_on
+    target:
+      entity_id: light.living_edisson
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id: light.living_couch_highlight
   mode: single
 - id: '1588587120497'
   alias: 'Living: Turn off lights when no motion in a while'
@@ -29,8 +35,11 @@
   - entity_id: light.living_edisson
     service: light.turn_off
   - data: {}
-    entity_id: light.living_main_light
+    entity_id: light.living_main
     service: light.turn_off
+  - service: light.turn_off
+    target:
+      entity_id: light.living_couch_highlight
   mode: single
 - id: '1588607571701'
   alias: 'Living: Turn on main light when sunset and motion detected'
@@ -49,7 +58,7 @@
       condition: sun
   action:
   - data: {}
-    entity_id: light.living_main_light
+    entity_id: light.living_main
     service: light.turn_on
 - id: '1589029647840'
   alias: say hello when mxtnr came back
@@ -89,10 +98,7 @@
     service: light.turn_off
   - data: {}
     service: light.turn_off
-    entity_id: light.kitchen_main_light_2
-  - data: {}
-    service: light.turn_off
-    entity_id: light.hallway_main_light
+    entity_id: light.hall_main
   mode: single
 - id: '1589296416725'
   alias: 'Hall: wall switch light'
@@ -119,7 +125,8 @@
   - for: 00:20:00
     platform: state
     to: 'off'
-    entity_id: binary_sensor.entry_door_motion_final
+    entity_id: binary_sensor.hall_door_motion
+    from: 'on'
   condition: []
   action:
   - data: {}
@@ -136,9 +143,6 @@
   action:
   - data: {}
     entity_id: automation.living_edisson_motion
-    service: automation.turn_on
-  - data: {}
-    entity_id: automation.a_toggle_all_light
     service: automation.turn_on
   - data: {}
     entity_id: automation.turn_off_hall_led_when_night_came
@@ -169,11 +173,16 @@
     state: 'off'
   action:
   - data: {}
-    entity_id: light.living_edisson
     service: light.turn_on
+    target:
+      entity_id: light.living_edisson
   - service: automation.turn_on
     data: {}
     entity_id: automation.living_edisson_motion
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id: light.living_couch_highlight
   mode: single
 - id: '1589380016804'
   alias: 'Living: switch edissons off'
@@ -194,8 +203,9 @@
     entity_id: light.living_edisson
     service: light.turn_off
   - data: {}
-    entity_id: light.living_main_light
     service: light.turn_off
+    target:
+      entity_id: light.living_main
   - service: automation.turn_off
     data: {}
     entity_id: automation.living_edisson_motion
@@ -231,86 +241,12 @@
     entity_id: light.living_edisson
     state: 'on'
   - condition: state
-    entity_id: light.living_main_light
+    entity_id: light.living_main
     state: 'off'
   action:
   - data: {}
     entity_id: light.living_edisson
     service: light.turn_off
-  mode: single
-- id: '1593597552955'
-  alias: '*: Turn all light off'
-  description: ''
-  trigger:
-  - entity_id: sensor.0x00158d00039b3168_click
-    platform: state
-    to: single
-  condition:
-  - condition: state
-    entity_id: group.all_lights
-    state: 'on'
-  action:
-  - data: {}
-    entity_id: light.hall_led
-    service: light.turn_off
-  - data: {}
-    entity_id: light.hall_wall
-    service: light.turn_off
-  - data: {}
-    entity_id: light.hallway_main_light
-    service: light.turn_off
-  - data: {}
-    entity_id: light.living_edisson
-    service: light.turn_off
-  - data: {}
-    entity_id: light.living_main_light
-    service: light.turn_off
-  - service: light.turn_off
-    data: {}
-    entity_id: light.bedroom_light
-  - service: light.turn_off
-    data: {}
-    entity_id: light.kitchen_main_light_esp_wc
-  - service: light.turn_off
-    data: {}
-    entity_id: light.kitchen_led
-  - service: media_player.turn_off
-    data: {}
-    entity_id: media_player.q9
-  mode: single
-- id: '1593597552958'
-  alias: '*: Turn all light on'
-  description: ''
-  trigger:
-  - entity_id: sensor.0x00158d00039b3168_click
-    platform: state
-    to: single
-  condition:
-  - condition: state
-    entity_id: group.all_lights
-    state: 'off'
-  action:
-  - data: {}
-    entity_id: light.hall_led
-    service: light.turn_on
-  - data: {}
-    entity_id: light.hall_wall
-    service: light.turn_on
-  - data: {}
-    entity_id: light.living_edisson
-    service: light.turn_on
-  - data: {}
-    entity_id: automation.turn_on_hall_led_stripe_at_8_40
-    service: automation.turn_on
-  - service: automation.turn_on
-    data: {}
-    entity_id: automation.living_edisson_motion
-  - service: light.turn_on
-    data: {}
-    entity_id: light.bedroom_light
-  - service: light.turn_on
-    data: {}
-    entity_id: light.kitchen_led
   mode: single
 - id: '1599475769646'
   alias: 'Hall: Main door opened — All Light on'
@@ -319,26 +255,17 @@
   - entity_id: binary_sensor.hall_main_door
     platform: state
     to: 'on'
+    from: 'off'
   condition:
   - condition: state
     entity_id: group.all_lights
     state: 'off'
   action:
   - data: {}
-    entity_id: light.hall_wall
-    service: light.turn_on
-  - data: {}
-    entity_id: light.hall_led
-    service: light.turn_on
-  - data: {}
-    entity_id: light.living_main_light
-    service: light.turn_on
-  - data: {}
     entity_id: automation.turn_on_hall_led_stripe_at_8_40
     service: automation.turn_on
-  - service: light.turn_on
+  - service: script.light_on
     data: {}
-    entity_id: light.kitchen_led
   mode: single
 - id: '1601754197704'
   alias: 'Purifier: night idle'
@@ -394,7 +321,8 @@
   trigger:
   - platform: state
     to: 'on'
-    entity_id: binary_sensor.entry_door_motion_final
+    entity_id: binary_sensor.hall_door_motion
+    from: 'off'
   condition:
   - condition: time
     before: '23:30:00'
@@ -402,7 +330,7 @@
   action:
   - service: light.turn_on
     data: {}
-    entity_id: light.hall_wall_light
+    entity_id: light.hall_wall
   mode: single
 - id: '1606064025041'
   alias: 'Hall: Main door — Wall Light'
@@ -415,7 +343,7 @@
   action:
   - service: light.turn_on
     data: {}
-    entity_id: light.hall_wall_light
+    entity_id: light.hall_wall
   - service: light.turn_on
     data: {}
     entity_id: light.hall_led
@@ -433,37 +361,36 @@
     after: 00:30:00
     before: 04:00:00
   action:
-  - service: automation.trigger
+  - service: script.light_off
     data: {}
-    entity_id: automation.a_toggle_all_light
   mode: single
 - id: '1612899740830'
   alias: 'wc: water: update hot'
   description: ''
   trigger:
-  - platform: state
-    entity_id: binary_sensor.wc_hot_imp
-    to: 'on'
+  - platform: mqtt
+    topic: wc/input/wc_hot_imp
   condition: []
   action:
   - service: input_number.increment
     data: {}
     entity_id: input_number.water_hot
+  - service: rest_command.upd_hot
+    data: {}
   mode: single
 - id: '1612899740831'
   alias: 'wc: water: update cold'
   description: ''
   trigger:
-  - platform: state
-    entity_id: binary_sensor.wc_cld_imp
-    to: 'on'
+  - platform: mqtt
+    topic: wc/input/wc_cld_imp
   condition: []
   action:
-  - service: input_number.set_value
-    data_template:
-      entity_id: input_number.water_cold
-      value: '{{ float("{:.2f}".format(float(states("input_number.water_cold")) +
-        0.01)) }}'
+  - service: input_number.increment
+    data: {}
+    entity_id: input_number.water_cold
+  - service: rest_command.upd_cld
+    data: {}
   mode: single
 - id: '1613142528014'
   alias: Cleaner took off — All lights on
@@ -479,26 +406,22 @@
     after: 08:00:00
     before: 02:00:00
   action:
-  - service: automation.trigger
-    data: {}
-    entity_id: automation.turn_all_light_on
-  - service: light.turn_on
-    data:
-      brightness: 255
-    entity_id: light.bedroom_light
   - service: light.turn_on
     data: {}
-    entity_id: light.hallway_main_light
-  - service: light.turn_on
-    data: {}
-    entity_id: light.living_main_light
+    target:
+      entity_id:
+      - light.kitchen_main_light_esp_wc
+      - light.living_main
+      - light.bedroom_main
+      - light.hall_main
+      - light.hall_wall
   mode: single
 - id: '1613172422587'
   alias: 'hall: turn off main light in 40 minutes'
   description: ''
   trigger:
   - platform: state
-    entity_id: light.hallway_main_light
+    entity_id: light.hall_main
     from: 'off'
     to: 'on'
     for: 00:40:00
@@ -506,10 +429,10 @@
   action:
   - service: light.turn_off
     data: {}
-    entity_id: light.hallway_main_light
+    entity_id: light.hall_main
   mode: single
 - id: '1613332138211'
-  alias: Cleaner on baae — light down
+  alias: Cleaner on base — light down
   description: ''
   trigger:
   - type: not_opened
@@ -521,13 +444,12 @@
   action:
   - service: light.turn_off
     data: {}
-    entity_id: light.hallway_main_light
-  - service: light.turn_off
-    data: {}
-    entity_id: light.living_main_light
-  - service: light.turn_off
-    data: {}
-    entity_id: light.hall_wall_light
+    target:
+      entity_id:
+      - light.living_main
+      - light.hall_wall
+      - light.bedroom_main
+      - light.hall_main
   mode: single
 - id: '1613345212576'
   alias: tv on — main light off
@@ -541,7 +463,7 @@
   action:
   - service: light.turn_off
     data: {}
-    entity_id: light.living_main_light
+    entity_id: light.living_main
   mode: single
 - id: '1613582192095'
   alias: 'Bedroom: too cold'
@@ -584,13 +506,711 @@
   - condition: state
     entity_id: media_player.q9
     state: 'off'
+  - condition: state
+    entity_id: binary_sensor.living_tv_near_desk
+    state: 'off'
   action:
-  - service: media_player.turn_on
+  - repeat:
+      count: '1'
+      sequence:
+      - service: media_player.turn_on
+        data: {}
+        target:
+          entity_id: media_player.q9
+      - wait_template: '{{ 1 }}'
+        timeout: 00:00:07
+        continue_on_timeout: true
+      - service: media_player.play_media
+        data:
+          media_content_type: send_key
+          media_content_id: KEY_MUTE
+        target:
+          entity_id: media_player.q9
+      - wait_template: '{{ 1 }}'
+        timeout: 00:00:01
+        continue_on_timeout: true
+      - service: media_player.play_media
+        data:
+          media_content_type: send_key
+          media_content_id: KEY_ENTER
+        target:
+          entity_id: media_player.q9
+      - wait_template: '{{ 1 }}'
+        timeout: 00:00:03
+        continue_on_timeout: true
+      - service: media_player.play_media
+        data:
+          media_content_type: send_key
+          media_content_id: KEY_AMBIENT
+        target:
+          entity_id: media_player.q9
+  mode: single
+- id: '1615243613178'
+  alias: 'Living: Stupid Vent'
+  description: Open window for 5 min every 40 minutes
+  trigger:
+  - platform: time_pattern
+    hours: /1
+  condition: []
+  action:
+  - repeat:
+      count: '1'
+      sequence:
+      - service: cover.open_cover
+        data: {}
+        entity_id: cover.living_window_vent
+      - delay:
+          hours: 0
+          minutes: 4
+          seconds: 0
+          milliseconds: 0
+      - service: cover.close_cover
+        data: {}
+        entity_id: cover.living_window_vent
+  mode: single
+- id: '1616393005154'
+  alias: 'Bathroom: main light is so long'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: light.wc_main_light_esp_wc
+    from: 'off'
+    to: 'on'
+    for: '2:00:00'
+  condition: []
+  action:
+  - service: light.turn_off
+    data: {}
+    entity_id: light.wc_main_light_esp_wc
+  - service: light.turn_off
+    data: {}
+    entity_id: light.wc_shower_light
+  mode: single
+- id: '1616520264405'
+  alias: 'Hall: button—toggle main light'
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: hall/input/hall_button
+    payload: IMP
+  condition:
+  - condition: state
+    entity_id: light.hall_led
+    state: 'on'
+  action:
+  - service: light.toggle
+    data: {}
+    target:
+      entity_id: light.hall_main
+  mode: single
+- id: '1616577777846'
+  alias: 'Hall: button—turn on highlight'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.hall_button
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: light.hall_led
+    state: 'off'
+  action:
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id: light.hall_led
+  mode: single
+- id: '1616934158531'
+  alias: 'Living: long click — toggle main light'
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 09e58166923343f5bc376ebc11ce7393
+    type: action
+    subtype: hold
+    discovery_id: 0x00158d00039a2f89 action_hold
+  condition: []
+  action:
+  - service: light.toggle
+    data: {}
+    entity_id: light.living_main
+  mode: single
+- id: '1616942146273'
+  alias: 'Living: couch 2 click — turn on tv'
+  description: ''
+  trigger:
+  - platform: event
+    event_type: esphome.living_couch_btn_dblclick
+  - platform: event
+    event_type: esphome.living_desk_btn_dblclick
+  condition:
+  - condition: device
+    device_id: 3960fb7ce075396a6aa0ddfb64962a58
+    domain: media_player
+    entity_id: media_player.q9
+    type: is_off
+  action:
+  - repeat:
+      count: '1'
+      sequence:
+      - service: media_player.turn_on
+        data: {}
+        entity_id: media_player.q9
+      - wait_template: '{{ 1 }}'
+        timeout: 00:00:08
+        continue_on_timeout: true
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: binary_sensor.living_tv_near_desk
+            state: 'off'
+          sequence:
+          - service: media_player.select_source
+            data:
+              source: Netflix
+            target:
+              entity_id: media_player.q9
+        default:
+        - service: media_player.select_source
+          data:
+            source: Мак
+          target:
+            entity_id: media_player.q9
+      - wait_template: '{{ 1 }}'
+        continue_on_timeout: true
+        timeout: 00:00:01
+      - service: media_player.play_media
+        data:
+          media_content_type: send_key
+          media_content_id: KEY_ENTER
+        target:
+          entity_id: media_player.q9
+  mode: single
+- id: '1617001805997'
+  alias: 'Living: desk btn—toggle main light'
+  description: ''
+  trigger:
+  - platform: event
+    event_type: esphome.living_desk_btn_click
+  condition: []
+  action:
+  - service: light.toggle
+    data: {}
+    target:
+      entity_id: light.living_main
+  mode: single
+- id: '1617037747034'
+  alias: Hello alex
+  description: ''
+  trigger:
+  - platform: device
+    device_id: 125d8ff6c9e3df6cf8d4fc154b7b211e
+    domain: device_tracker
+    entity_id: device_tracker.mxtnr
+    type: enters
+    zone: zone.home
+  condition: []
+  action:
+  - repeat:
+      count: '1'
+      sequence:
+      - wait_for_trigger:
+        - platform: state
+          entity_id: binary_sensor.hall_main_door
+          from: 'off'
+          to: 'on'
+        timeout: 00:15:00
+      - wait_template: '{{ 1 }}'
+        continue_on_timeout: true
+        timeout: 00:00:03
+      - service: tts.google_translate_say
+        data:
+          entity_id: media_player.squeezelite_2
+          message: Hello alex!
+          cache: true
+  mode: single
+- id: '1617049870650'
+  alias: Door bell
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.hall_doorbell
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - repeat:
+      count: '1'
+      sequence:
+      - service: notify.all
+        data:
+          message: Door bell
+          title: 🛎🚪
+      - service: light.toggle
+        data: {}
+        target:
+          entity_id: light.hall_led
+      - wait_template: '{{ 1 }}'
+        timeout: 00:00:01
+        continue_on_timeout: true
+      - service: light.toggle
+        data: {}
+        target:
+          entity_id: light.hall_led
+      - wait_template: '{{ 1 }}'
+        timeout: 00:00:01
+        continue_on_timeout: true
+      - service: light.toggle
+        data: {}
+        target:
+          entity_id: light.hall_led
+      - wait_template: '{{ 1 }}'
+        timeout: 00:00:01
+        continue_on_timeout: true
+      - service: light.toggle
+        data: {}
+        target:
+          entity_id: light.hall_led
+      - wait_template: '{{ 1 }}'
+        timeout: 00:00:01
+        continue_on_timeout: true
+      - service: light.toggle
+        data: {}
+        target:
+          entity_id: light.hall_led
+      - wait_template: '{{ 1 }}'
+        timeout: 00:00:01
+        continue_on_timeout: true
+      - service: light.toggle
+        data: {}
+        target:
+          entity_id: light.hall_led
+      - wait_template: '{{ 1 }}'
+        timeout: 00:00:01
+        continue_on_timeout: true
+      - service: light.toggle
+        data: {}
+        target:
+          entity_id: light.hall_led
+      - wait_template: '{{ 1 }}'
+        timeout: 00:00:01
+        continue_on_timeout: true
+      - service: light.toggle
+        data: {}
+        target:
+          entity_id: light.hall_led
+      - wait_template: '{{ 1 }}'
+        timeout: 00:00:01
+        continue_on_timeout: true
+      - service: light.toggle
+        data: {}
+        target:
+          entity_id: light.hall_led
+      - wait_template: '{{ 1 }}'
+        timeout: 00:00:01
+        continue_on_timeout: true
+      - service: light.toggle
+        data: {}
+        target:
+          entity_id: light.hall_led
+      - wait_template: '{{ 1 }}'
+        timeout: 00:00:01
+        continue_on_timeout: true
+      - service: light.toggle
+        data: {}
+        target:
+          entity_id: light.hall_led
+      - wait_template: '{{ 1 }}'
+        timeout: 00:00:01
+        continue_on_timeout: true
+      - service: light.toggle
+        data: {}
+        target:
+          entity_id: light.hall_led
+  mode: single
+- id: '1617054991041'
+  alias: 'Home: we re gone'
+  description: ''
+  trigger:
+  - platform: zone
+    entity_id: person.mxtnr
+    zone: zone.home
+    event: leave
+  - platform: zone
+    entity_id: person.sveta
+    zone: zone.home
+    event: leave
+  condition:
+  - condition: state
+    entity_id: group.all_lights
+    state: 'on'
+  - condition: state
+    entity_id: group.home_persons
+    state: not_home
+  action:
+  - service: script.light_off
+    data: {}
+  - service: notify.mobile_app_mxtnr
+    data:
+      message: Light turned off
+      title: 💁🏿‍♀️🌚
+  mode: single
+- id: '1617055218965'
+  alias: 'Home: we re near — set domofon auto open '
+  description: ''
+  trigger:
+  - platform: zone
+    entity_id: person.mxtnr
+    zone: zone.home
+    event: enter
+  - platform: zone
+    entity_id: person.sveta
+    zone: zone.home
+    event: enter
+  condition: []
+  action:
+  - type: turn_on
+    device_id: 8ea567e506c3793d55f3e1bbb2ee680b
+    entity_id: switch.domofon_automatically_open_once
+    domain: switch
+  mode: single
+- id: '1617055510783'
+  alias: 'Hall: domofon ring push'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.domofon_incoming_call
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: notify.all
+    data:
+      title: 🔔🏠
+      message: Domofon bell
+  mode: single
+- id: '1617180278990'
+  alias: 'Living: couch click—tv play/pause'
+  description: ''
+  trigger:
+  - platform: event
+    event_type: esphome.living_couch_btn_click
+  condition:
+  - condition: device
+    device_id: 3960fb7ce075396a6aa0ddfb64962a58
+    domain: media_player
+    entity_id: media_player.q9
+    type: is_on
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: media_player.q9
+        state: Netflix
+        attribute: source
+      sequence:
+      - service: media_player.media_play_pause
+        target:
+          entity_id: media_player.q9
+    - conditions:
+      - condition: state
+        entity_id: media_player.q9
+        state: YouTube
+        attribute: source
+      sequence:
+      - service: media_player.media_play_pause
+        target:
+          entity_id: media_player.q9
+    default:
+    - service: media_player.play_media
+      data:
+        media_content_id: KEY_ENTER
+        media_content_type: send_key
+      target:
+        entity_id: media_player.q9
+  - wait_template: '{{ 1 }}'
+    timeout: 00:00:01
+    continue_on_timeout: true
+  mode: single
+- id: '1617209056223'
+  alias: 'Hall: domofon: auto open stale'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.domofon_automatically_open_once
+    from: 'off'
+    to: 'on'
+    for: 00:30:00
+  condition: []
+  action:
+  - type: turn_off
+    device_id: 8ea567e506c3793d55f3e1bbb2ee680b
+    entity_id: switch.domofon_automatically_open_once
+    domain: switch
+  mode: single
+- id: '1617299033766'
+  alias: 'Living: start vent'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.living_couch_co2
+    above: '499'
+  condition: []
+  action:
+  - service: cover.open_cover
+    target:
+      entity_id: cover.living_window_vent
+  mode: single
+- id: '1617299112430'
+  alias: 'Living: stop vent'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.living_couch_co2
+    below: '440'
+    for: 00:01:00
+  condition: []
+  action:
+  - service: cover.close_cover
+    target:
+      entity_id: cover.living_window_vent
+  mode: single
+- id: '1617351870514'
+  alias: 'Bedroom: wall light off'
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: aa16a0aeea294af18ed189c49e864f97
+    type: click
+    subtype: single
+    discovery_id: 0x00158d00039b3168 click_single
+  condition:
+  - condition: numeric_state
+    entity_id: light.bedroom_light
+    attribute: brightness
+    above: '250'
+  action:
+  - service: light.turn_on
+    data:
+      brightness_pct: 50
+    target:
+      entity_id: light.bedroom_light
+  mode: single
+- id: '1617352152975'
+  alias: 'Bedroom: wall light on'
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: aa16a0aeea294af18ed189c49e864f97
+    type: click
+    subtype: single
+    discovery_id: 0x00158d00039b3168 click_single
+  condition:
+  - condition: numeric_state
+    entity_id: light.bedroom_light
+    attribute: brightness
+    below: '250'
+  action:
+  - service: light.turn_on
+    data:
+      brightness_pct: 100
+    target:
+      entity_id: light.bedroom_light
+  mode: single
+- id: '1617391463605'
+  alias: 'Bedroom: toggle big main light'
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: aa16a0aeea294af18ed189c49e864f97
+    type: click
+    subtype: double
+    discovery_id: 0x00158d00039b3168 click_double
+  condition: []
+  action:
+  - service: light.toggle
+    data: {}
+    target:
+      entity_id: light.bedroom_main
+  mode: single
+- id: '1617650655826'
+  alias: 'Living: couch 2 click — turn off tv'
+  description: ''
+  trigger:
+  - platform: event
+    event_type: esphome.living_couch_btn_dblclick
+  - platform: event
+    event_type: esphome.living_desk_btn_dblclick
+  condition:
+  - condition: device
+    device_id: 3960fb7ce075396a6aa0ddfb64962a58
+    domain: media_player
+    entity_id: media_player.q9
+    type: is_on
+  action:
+  - service: media_player.turn_off
     data: {}
     entity_id: media_player.q9
-  - service: media_player.play_media
-    data:
-      media_content_type: send_key
-      media_content_id: KEY_AMBIENT
+  - wait_template: '{{ 1 }}'
+    timeout: 00:00:05
+    continue_on_timeout: true
+  mode: single
+- id: '1617813876981'
+  alias: 'Living: speakers on—setup'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.living_speakers
+    to: 'on'
+    from: 'off'
+  condition: []
+  action:
+  - repeat:
+      count: '1'
+      sequence:
+      - wait_template: '{{ 1 }}'
+        continue_on_timeout: true
+        timeout: 00:00:01
+      - service: switch.turn_on
+        target:
+          entity_id: switch.living_speakers_setup
+  mode: single
+- id: '1617813987335'
+  alias: 'Living: tv off—speakers off'
+  description: ''
+  trigger:
+  - platform: device
+    device_id: 3960fb7ce075396a6aa0ddfb64962a58
+    domain: media_player
     entity_id: media_player.q9
+    type: turned_off
+  condition: []
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id: switch.living_speakers
+  mode: single
+- id: '1617814032264'
+  alias: 'Living: tv start playing—speakers on'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: media_player.q9
+    to: Netflix
+    attribute: source
+  - platform: state
+    entity_id: media_player.q9
+    attribute: source
+    to: YouTube
+  condition:
+  - condition: state
+    entity_id: switch.living_speakers
+    state: 'off'
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.living_speakers
+  mode: single
+- id: '1617970402785'
+  alias: 'Living: tv near desk—mac'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.living_tv_near_desk
+    from: 'off'
+    to: 'on'
+    for: 00:00:02
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: device
+        device_id: 3960fb7ce075396a6aa0ddfb64962a58
+        domain: media_player
+        entity_id: media_player.q9
+        type: is_on
+      sequence:
+      - service: media_player.select_source
+        data:
+          source: Мак
+        target:
+          entity_id: media_player.q9
+    default:
+    - repeat:
+        count: '1'
+        sequence:
+        - service: media_player.turn_on
+          target:
+            entity_id: media_player.q9
+        - wait_template: '{{ 1 }}'
+          timeout: 00:00:05
+          continue_on_timeout: true
+        - service: media_player.select_source
+          data:
+            source: Мак
+          target:
+            entity_id: media_player.q9
+        - service: media_player.play_media
+          data:
+            media_content_type: send_key
+            media_content_id: KEY_ENTER
+          target:
+            entity_id: media_player.q9
+  mode: single
+- id: '1617970859890'
+  alias: 'Living: tv off desk—netflix'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.living_tv_near_desk
+    to: 'off'
+    for: 00:00:04
+    from: 'on'
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: device
+        device_id: 3960fb7ce075396a6aa0ddfb64962a58
+        domain: media_player
+        entity_id: media_player.q9
+        type: is_on
+      sequence:
+      - service: media_player.select_source
+        data:
+          source: Netflix
+        target:
+          entity_id: media_player.q9
+    default:
+    - repeat:
+        count: '1'
+        sequence:
+        - service: media_player.turn_on
+          target:
+            entity_id: media_player.q9
+        - wait_template: '{{ 1 }}'
+          timeout: 00:00:04
+          continue_on_timeout: true
+        - service: media_player.select_source
+          data:
+            source: Netflix
+          target:
+            entity_id: media_player.q9
+  mode: single
+- id: '1618042642140'
+  alias: 'Living: couch hold—toggle speakers'
+  description: ''
+  trigger:
+  - platform: event
+    event_type: esphome.living_couch_btn_hold
+  condition: []
+  action:
+  - service: switch.toggle
+    target:
+      entity_id: switch.living_speakers
   mode: single

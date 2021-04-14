@@ -1,0 +1,24 @@
+# Send HomeAssistant devices into Homekit
+filter:
+    exclude_domains:
+        - device_tracker
+        - media_player
+        - person
+        - automation
+    exclude_entity_globs:
+        - '*._*'
+        - '*.transmission*'
+    exclude_entities:
+        - switch.kitchen_main_light_2
+        - binary_sensor.updater
+        - sensor.hacs
+        - switch.living_edisson_light_switch
+        - binary_sensor.button
+        - switch.kitchen_main_light
+        - switch.hall_wall_light
+        - binary_sensor.hall_wall_switch
+        - switch.hall_led_2
+        - switch.hall_wall_light_2
+        - switch.living_edisson_light
+        - switch.kitchen_main_light_2
+        - binary_sensor.entry_door_motion_final

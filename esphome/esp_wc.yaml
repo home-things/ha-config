@@ -4,9 +4,8 @@ esphome:
   board: esp12e
 
 wifi:
-  ssid: "grove"
-  password: "0My%Secur"
-  reboot_timeout: 1h # Чтобы свет не моргал каждые 15 мин если wifi отвалился
+  ssid:     !secret wifi_ssid
+  password: !secret wifi_pswd
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:

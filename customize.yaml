@@ -121,3 +121,13 @@ sensor.wc_temperature:
   unit_of_measurement: °C
 sensor.airclimate_humidity_bedroom:
   device_class: humidity
+media_player.q9:
+  source_list:
+  - TV
+  - HDMI
+  - Netflix
+  - Youtube
+light.wc_shower_light:
+  friendly_name: Bathroom Shower Light
+binary_sensor.entry_door_motion_final:
+  friendly_name: EntryDoor Motion old

@@ -1,0 +1,65 @@
+# Note: Climate at WC is over MQTT discovery (from pi-mqtt-gpio)
+
+# Water at WC
+- platform: template
+  sensors:
+    water_hot:
+      friendly_name: "Water Hot"
+      value_template: "{{ states('input_number.water_hot') }}"
+      unit_of_measurement: "m3"
+      device_class: "temperature" # HACK: HA has not more siutable
+      #icon: "hass:water"
+- platform: template
+  sensors:
+    water_cold:
+      friendly_name: "Water Cold"
+      value_template: "{{ states('input_number.water_cold') }}"
+      unit_of_measurement: "m3"
+      device_class: "temperature"
+      #icon: "hass:water"
+
+# PM2.5 Max Hall+Kitchen
+- platform: template
+  sensors:
+    pm_2_5_max:
+      friendly_name: "PM2.5 Max Hall&Kitch"
+      unit_of_measurement: "µg/m³"
+      value_template: "{{ [states('sensor.airquality_pm2_5_hall'), states('sensor.xiaomi_airpurifier_air_quality_pm25')] | max }}"
+
+
+# Climate at bedroom
+- platform: mqtt
+  name: "AirClimate Temperature Bedroom"
+  state_topic: "/bedroom/weather/climate"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.temperature }}"
+- platform: mqtt
+  name: "AirClimate Humidity Bedroom"
+  state_topic: "/bedroom/weather/climate"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.humidity }}"
+- platform: mqtt
+  name: "AirClimate Pressure Bedroom"
+  state_topic: "/bedroom/weather/climate"
+  unit_of_measurement: "hPa"
+  value_template: "{{ value_json.pressure }}"
+
+# SDS011 at hall
+- platform: mqtt
+  name: "AirQuality PM2.5 Hall"
+  state_topic: "/hall/weather/pm"
+  unit_of_measurement: "µg/m³"
+  value_template: "{{ value_json.pm2_5 }}"
+- platform: mqtt
+  name: "AirQuality PM10 Hall"
+  state_topic: "/hall/weather/pm"
+  unit_of_measurement: "µg/m³"
+  value_template: "{{ value_json.pm10 }}"
+ 
+# Не завелось 
+#  - platform: mhz19
+#    serial_device: /dev/ttyS0
+#    name: AirQuality Living
+#    monitored_conditions:
+#      - co2
+#      - temperature

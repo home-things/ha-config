@@ -7,7 +7,7 @@ fan:
     token: '9b9cc02dcf7f559fc559071a18163970'
     name: "Xiaomi Air Purifier 2S"
 
-  
+
 sensor:
   # Xiaomi Air Purifier 2S
   - platform: template
@@ -156,7 +156,7 @@ automation:
     trigger:
     - above: '2'
       below: '8'
-      entity_id: sensor.xiaomi_airpurifier_air_quality_pm25
+      entity_id: sensor.pm_2_5_max
       for: 00:00:12
       platform: numeric_state
     condition:
@@ -168,7 +168,7 @@ automation:
     #       before: sunrise
     action:
     - data:
-        level: 4
+        level: 5
       entity_id: fan.xiaomi_air_purifier_2s
       service: xiaomi_miio.fan_set_favorite_level
     - data:
@@ -176,7 +176,7 @@ automation:
       entity_id: fan.xiaomi_air_purifier_2s
       service: fan.set_speed
     - data:
-        value: 4
+        value: 5
       entity_id: input_number.xiaomi_airpurifier_favorite_level
       service: input_number.set_value
     - data:
@@ -190,7 +190,7 @@ automation:
     trigger:
     - above: '7'
       below: '16'
-      entity_id: sensor.xiaomi_airpurifier_air_quality_pm25
+      entity_id: sensor.pm_2_5_max
       for: 00:00:10
       platform: numeric_state
     condition: 
@@ -223,7 +223,7 @@ automation:
     description: 'max level'
     trigger:
     - above: '15'
-      entity_id: sensor.xiaomi_airpurifier_air_quality_pm25
+      entity_id: sensor.pm_2_5_max
       for: 00:00:10
       platform: numeric_state
     condition: 
@@ -256,8 +256,8 @@ automation:
     description: 'silent'
     trigger:
     - below: '2'
-      entity_id: sensor.xiaomi_airpurifier_air_quality_pm25
-      for: 00:01:00
+      entity_id: sensor.pm_2_5_max
+      for: 00:02:00
       platform: numeric_state
     condition:
       - condition: state
@@ -274,11 +274,11 @@ automation:
       entity_id: input_select.xiaomi_airpurifier_mode
       service: input_select.select_option
     - data:
-        level: 1
+        level: 2
       entity_id: fan.xiaomi_air_purifier_2s
       service: xiaomi_miio.fan_set_favorite_level
     - data:
-        value: 1
+        value: 2
       entity_id: input_number.xiaomi_airpurifier_favorite_level
       service: input_number.set_value
 

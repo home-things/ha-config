@@ -1,27 +1,75 @@
-{}
-# turnoff_edissons_when_nomotion_while:
-#   trigger:
-#     # Multiple entities for which you want to perform the same action.
-#     platform: state
-#     entity_id:
-#       - binary_sensor.living_motion
-#     to: "on"
-#     # Trigger when no motion for 30 minutes.
-#     for: "00:00:10"
-#   action:
-#     - service: light.turn_off
-#       data_template:
-#         # Turn off whichever entity triggered the automation.
-#         entity_id: "light.living_edisson_light"
-
-# turnoff_edissons_when_nomotion_while:
-#   # alias: Turnoff Edissons when no motion while
-#   trigger:
-#     platform: state
-#     entity_id: 
-#       - binary_sensor.living_movs
-#     to: "on"
-#     for: "00:00:05"
-#   action:
-#   - service: light.turn_off
-#     entity_id: light.living_edisson_light
+light_off:
+  alias: Light off
+  sequence:
+  - data: {}
+    entity_id: light.hall_led
+    service: light.turn_off
+  - data: {}
+    entity_id: light.hall_wall
+    service: light.turn_off
+  - data: {}
+    entity_id: light.hall_main
+    service: light.turn_off
+  - data: {}
+    entity_id: light.living_edisson
+    service: light.turn_off
+  - data: {}
+    entity_id: light.living_main
+    service: light.turn_off
+  - service: light.turn_off
+    data: {}
+    entity_id: light.bedroom_light
+  - service: light.turn_off
+    data: {}
+    entity_id: light.kitchen_main_light_esp_wc
+  - service: light.turn_off
+    data: {}
+    entity_id: light.kitchen_led
+  - service: media_player.turn_off
+    data: {}
+    entity_id: media_player.q9
+  - service: cover.close_cover
+    data: {}
+    entity_id: cover.living_window_vent
+  - service: automation.turn_off
+    data: {}
+    entity_id: automation.stupid_vent
+  - service: switch.turn_off
+    data: {}
+    entity_id: switch.wc_fan
+  - service: automation.turn_off
+    target:
+      entity_id: automation.living_stsrt_vent
+  mode: single
+light_on:
+  alias: Light on
+  sequence:
+  - data: {}
+    entity_id: light.hall_led
+    service: light.turn_on
+  - data: {}
+    entity_id: light.hall_wall
+    service: light.turn_on
+  - data: {}
+    entity_id: light.living_edisson
+    service: light.turn_on
+  - data: {}
+    entity_id: automation.turn_on_hall_led_stripe_at_8_40
+    service: automation.turn_on
+  - service: automation.turn_on
+    data: {}
+    entity_id: automation.living_edisson_motion
+  - service: light.turn_on
+    data: {}
+    entity_id: light.bedroom_light
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id: light.kitchen_led
+  - service: cover.open_cover
+    target:
+      entity_id: cover.living_window_vent
+  - service: automation.turn_on
+    target:
+      entity_id: automation.living_stsrt_vent
+  mode: single

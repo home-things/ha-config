@@ -1,13 +1,9 @@
 - platform: switch
-  name: kitchen_main_light
-  entity_id: switch.kitchen_main_light_2
+  name: Living Main
+  entity_id: switch.0x847127fffea207cd_switch # living main light button
 - platform: switch
-  name: wc_led
-  entity_id: switch.wc_led
-- platform: switch
-  name: kitchen_led
-  entity_id: switch.kitchen_led_light
-
+  name: Bedroom Main
+  entity_id: switch.0x847127fffea205d5_switch # bedroom main light button
 
 - platform: mqtt
   name: bedroom_light
