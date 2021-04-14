@@ -1,0 +1,531 @@
+{
+    "version": 1,
+    "key": "lovelace",
+    "data": {
+        "config": {
+            "background": "var(--background-image)",
+            "custom_header": {
+                "background": "rgba(155, 155, 155, 0.25)",
+                "compact_mode": true,
+                "swipe_animate": "fade",
+                "swipe_prevent_default": true
+            },
+            "title": "Home",
+            "views": [
+                {
+                    "panel": false,
+                    "path": "default_view",
+                    "title": "Home",
+                    "icon": "hass:home",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "entities": [
+                                {
+                                    "entity": "light.living_main"
+                                },
+                                {
+                                    "entity": "light.living_edisson"
+                                },
+                                {
+                                    "entity": "light.living_couch_highlight"
+                                },
+                                {
+                                    "type": "divider"
+                                },
+                                {
+                                    "entity": "light.bedroom_light"
+                                },
+                                {
+                                    "entity": "light.bedroom_main"
+                                },
+                                {
+                                    "type": "divider"
+                                },
+                                {
+                                    "entity": "light.kitchen_main_light_esp_wc"
+                                },
+                                {
+                                    "entity": "light.kitchen_led"
+                                },
+                                {
+                                    "type": "divider"
+                                },
+                                {
+                                    "entity": "light.hall_led"
+                                },
+                                {
+                                    "entity": "light.hall_wall"
+                                },
+                                {
+                                    "entity": "light.hall_main"
+                                },
+                                {
+                                    "type": "divider"
+                                },
+                                {
+                                    "entity": "light.wc_main_light_esp_wc"
+                                },
+                                {
+                                    "entity": "light.wc_led"
+                                },
+                                {
+                                    "entity": "light.wc_shower_light"
+                                },
+                                {
+                                    "entity": "switch.wc_fan"
+                                }
+                            ],
+                            "show_header_toggle": true,
+                            "title": "\u041e\u0441\u0432\u0435\u0449\u0435\u043d\u0438\u0435",
+                            "type": "entities"
+                        },
+                        {
+                            "type": "vertical-stack",
+                            "cards": [
+                                {
+                                    "entity": "weather.home",
+                                    "name": "\u0417\u0430 \u0431\u043e\u0440\u0442\u043e\u043c",
+                                    "show_forecast": true,
+                                    "type": "weather-forecast"
+                                },
+                                {
+                                    "entities": [
+                                        {
+                                            "entity": "sensor.xiaomi_airpurifier_temp"
+                                        },
+                                        {
+                                            "entity": "sensor.airclimate_temperature_bedroom"
+                                        },
+                                        {
+                                            "type": "divider"
+                                        },
+                                        {
+                                            "entity": "sensor.living_couch_co2"
+                                        }
+                                    ],
+                                    "show_header_toggle": false,
+                                    "theme": "default",
+                                    "title": " ",
+                                    "type": "entities"
+                                },
+                                {
+                                    "type": "media-control",
+                                    "entity": "media_player.q9"
+                                },
+                                {
+                                    "type": "media-control",
+                                    "entity": "media_player.volumio_mpd"
+                                },
+                                {
+                                    "type": "custom:webrtc-camera",
+                                    "url": "rtsp://192.168.1.18:554/1/h264major"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "vertical-stack",
+                            "cards": [
+                                {
+                                    "entities": [
+                                        {
+                                            "entity": "binary_sensor.bedroom_balc_door",
+                                            "name": "bedroom - balc_door"
+                                        },
+                                        {
+                                            "entity": "binary_sensor.kinchen_balc_wnd"
+                                        },
+                                        {
+                                            "entity": "cover.living_window_vent"
+                                        },
+                                        {
+                                            "type": "divider"
+                                        },
+                                        {
+                                            "entity": "binary_sensor.hall_main_door"
+                                        }
+                                    ],
+                                    "title": "\u041e\u043a\u043d\u0430",
+                                    "type": "entities"
+                                },
+                                {
+                                    "type": "entities",
+                                    "entities": [
+                                        "input_number.water_cold",
+                                        "input_number.water_hot"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "icon": "hass:weather-windy",
+                    "path": "purifier",
+                    "title": "Purifier",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "entities": [
+                                {
+                                    "entity": "fan.xiaomi_air_purifier_2s"
+                                },
+                                {
+                                    "entity": "input_select.xiaomi_airpurifier_mode"
+                                },
+                                {
+                                    "entity": "input_number.xiaomi_airpurifier_favorite_level"
+                                },
+                                {
+                                    "entity": "switch.xiaomi_airpurifier_child_lock"
+                                },
+                                {
+                                    "entity": "switch.xiaomi_airpurifier_led"
+                                },
+                                {
+                                    "entity": "switch.xiaomi_airpurifier_buzzer"
+                                },
+                                {
+                                    "entity": "sensor.xiaomi_airpurifier_speed"
+                                },
+                                {
+                                    "entity": "sensor.xiaomi_airpurifier_filter_remaining"
+                                }
+                            ],
+                            "show_header_toggle": false,
+                            "theme": "default",
+                            "title": "Air Purifier",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "automation.no_purify_if_clean"
+                                },
+                                {
+                                    "entity": "automation.purify_if_dirty"
+                                },
+                                {
+                                    "entity": "automation.purify_if_dirty_8"
+                                },
+                                {
+                                    "entity": "automation.purify_if_dirty_16"
+                                }
+                            ],
+                            "title": "Automations",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.xiaomi_airpurifier_air_quality_pm25"
+                                },
+                                {
+                                    "entity": "sensor.airquality_pm2_5_hall"
+                                }
+                            ],
+                            "hours_to_show": 80,
+                            "refresh_interval": 60,
+                            "title": "Kitchen & Hall Air quality",
+                            "type": "history-graph"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.pm_2_5_max"
+                                },
+                                {
+                                    "entity": "sensor.xiaomi_airpurifier_air_quality_pm25"
+                                },
+                                {
+                                    "entity": "sensor.xiaomi_airpurifier_temp"
+                                },
+                                {
+                                    "entity": "sensor.xiaomi_airpurifier_humidity"
+                                }
+                            ],
+                            "show_header_toggle": false,
+                            "theme": "default",
+                            "type": "entities"
+                        }
+                    ]
+                },
+                {
+                    "title": "\u041a\u043b\u0438\u043c\u0430\u0442",
+                    "path": "",
+                    "icon": "hass:weather-fog",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "vertical-stack",
+                            "cards": [
+                                {
+                                    "type": "markdown",
+                                    "content": "### \u0412\u043b\u0430\u0436\u043d\u043e\u0441\u0442\u044c \u0438 \u0422\u0435\u043c\u043f\u0435\u0440\u0430\u0442\u0443\u0440\u0430",
+                                    "theme": "grey_night"
+                                },
+                                {
+                                    "type": "horizontal-stack",
+                                    "cards": [
+                                        {
+                                            "type": "gauge",
+                                            "entity": "sensor.airclimate_humidity_bedroom",
+                                            "min": 0,
+                                            "max": 100,
+                                            "name": "\u0421\u043f\u0430\u043b\u044c\u043d\u044f",
+                                            "severity": {
+                                                "green": 54,
+                                                "yellow": 40,
+                                                "red": 0
+                                            }
+                                        },
+                                        {
+                                            "type": "sensor",
+                                            "entity": "sensor.airclimate_humidity_bedroom",
+                                            "graph": "line",
+                                            "detail": 2
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "entities",
+                                    "entities": [
+                                        {
+                                            "entity": "sensor.airclimate_temperature_bedroom"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "horizontal-stack",
+                                    "cards": [
+                                        {
+                                            "type": "gauge",
+                                            "entity": "sensor.xiaomi_airpurifier_humidity",
+                                            "min": 0,
+                                            "max": 100,
+                                            "name": "\u041a\u0443\u0445\u043d\u044f",
+                                            "severity": {
+                                                "green": 54,
+                                                "yellow": 40,
+                                                "red": 0
+                                            }
+                                        },
+                                        {
+                                            "type": "sensor",
+                                            "entity": "sensor.xiaomi_airpurifier_humidity",
+                                            "graph": "line",
+                                            "detail": 2
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "entities",
+                                    "entities": [
+                                        {
+                                            "entity": "sensor.xiaomi_airpurifier_temp"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "gauge",
+                                    "entity": "sensor.wc_humidity",
+                                    "min": 0,
+                                    "max": 100,
+                                    "severity": {
+                                        "green": 54,
+                                        "yellow": 40,
+                                        "red": 0
+                                    },
+                                    "name": "\u0412\u0430\u043d\u043d\u0430\u044f"
+                                },
+                                {
+                                    "type": "entities",
+                                    "entities": [
+                                        {
+                                            "entity": "sensor.wc_temperature"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "vertical-stack",
+                            "cards": [
+                                {
+                                    "type": "markdown",
+                                    "content": "### \u041f\u044b\u043b\u044c\u043d\u043e\u0441\u0442\u044c",
+                                    "theme": "grey_night"
+                                },
+                                {
+                                    "type": "horizontal-stack",
+                                    "cards": [
+                                        {
+                                            "type": "gauge",
+                                            "entity": "sensor.airquality_pm2_5_hall",
+                                            "min": 0,
+                                            "max": 600,
+                                            "severity": {
+                                                "green": 0,
+                                                "yellow": 3,
+                                                "red": 16
+                                            }
+                                        },
+                                        {
+                                            "type": "sensor",
+                                            "entity": "sensor.airquality_pm2_5_hall",
+                                            "detail": 2,
+                                            "graph": "line"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "entities",
+                                    "entities": [
+                                        {
+                                            "entity": "sensor.airquality_pm10_hall"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "horizontal-stack",
+                                    "cards": [
+                                        {
+                                            "type": "gauge",
+                                            "entity": "sensor.xiaomi_airpurifier_air_quality_pm25",
+                                            "min": 0,
+                                            "max": 600,
+                                            "severity": {
+                                                "green": 0,
+                                                "yellow": 3,
+                                                "red": 16
+                                            }
+                                        },
+                                        {
+                                            "type": "sensor",
+                                            "entity": "sensor.xiaomi_airpurifier_air_quality_pm25",
+                                            "detail": 2,
+                                            "graph": "line"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "title": "\u0414\u043e\u043c\u043e\u0444\u043e\u043d",
+                    "path": "",
+                    "icon": "hass:phone",
+                    "badges": [],
+                    "cards": [
+                        {
+                            "type": "entities",
+                            "entities": [
+                                {
+                                    "entity": "binary_sensor.domofon_incoming_call",
+                                    "icon": "hass:phone",
+                                    "secondary_info": "last-changed"
+                                },
+                                {
+                                    "entity": "sensor.domofon_uptime"
+                                },
+                                {
+                                    "entity": "binary_sensor.domofon_button"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "vertical-stack",
+                            "cards": [
+                                {
+                                    "type": "horizontal-stack",
+                                    "cards": [
+                                        {
+                                            "type": "button",
+                                            "tap_action": {
+                                                "action": "toggle"
+                                            },
+                                            "entity": "switch.domofon_automatically_open",
+                                            "name": "Auto Open"
+                                        },
+                                        {
+                                            "type": "button",
+                                            "tap_action": {
+                                                "action": "toggle"
+                                            },
+                                            "entity": "switch.domofon_automatically_open_once",
+                                            "name": "... once"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "horizontal-stack",
+                                    "cards": [
+                                        {
+                                            "type": "button",
+                                            "tap_action": {
+                                                "action": "toggle"
+                                            },
+                                            "entity": "switch.domofon_mute_sound",
+                                            "name": "Mute"
+                                        },
+                                        {
+                                            "type": "button",
+                                            "tap_action": {
+                                                "action": "toggle"
+                                            },
+                                            "entity": "switch.domofon_mute_sound_once",
+                                            "name": "... once"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "horizontal-stack",
+                                    "cards": [
+                                        {
+                                            "type": "button",
+                                            "tap_action": {
+                                                "action": "toggle"
+                                            },
+                                            "entity": "switch.domofon_automatically_reject",
+                                            "name": "Auto reject"
+                                        },
+                                        {
+                                            "type": "button",
+                                            "tap_action": {
+                                                "action": "toggle"
+                                            },
+                                            "entity": "switch.domofon_restart",
+                                            "name": "Restart"
+                                        },
+                                        {
+                                            "type": "markdown",
+                                            "content": " "
+                                        },
+                                        {
+                                            "type": "markdown",
+                                            "content": " "
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "entities",
+                                    "entities": [
+                                        {
+                                            "entity": "automation.hall_domofon_auto_open_stale"
+                                        }
+                                    ],
+                                    "show_header_toggle": false
+                                },
+                                {
+                                    "type": "markdown",
+                                    "content": "Auto Open Once: {{relative_time(states.switch.domofon_automatically_open_once.last_changed)}} ago"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

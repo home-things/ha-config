@@ -1,6 +1,7 @@
 .HA_VERSION
 .homekit.state
 .storage
+!.storage/lovelace
 core
 custom_components
 *.log
